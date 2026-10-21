@@ -187,16 +187,23 @@ Solo se llama desde un `onPress`: nunca desde `useEffect`.
   "expo-router",
   ["expo-splash-screen", { ... }],              // se mantiene de la plantilla
   ["expo-camera", {
-    "cameraPermission": "Usamos tu cámara para leer el código QR del aula y sacar la foto del desperfecto.",
+    "cameraPermission": "Usamos tu cámara para leer el código QR del aula y sacar la foto del desperfecto que reportás.",
     "microphonePermission": false,
     "recordAudioAndroid": false
   }],
   ["expo-location", {
-    "locationWhenInUsePermission": "Usamos tu ubicación para marcar en qué lugar del instituto está el desperfecto."
-  }],                                            // background desactivado por defecto
+    "locationWhenInUsePermission": "Usamos tu ubicación para marcar en qué lugar del instituto está el desperfecto que reportás.",
+    // Las claves "siempre" y de movimiento las exige Apple porque la librería contiene esas APIs (C2 d):
+    // se reemplaza el texto genérico en inglés por uno honesto, aunque la app nunca las pida.
+    "locationAlwaysAndWhenInUsePermission": "Usamos tu ubicación solo mientras usás la app, para marcar dónde está el desperfecto. No la seguimos en segundo plano.",
+    "locationAlwaysPermission": "(mismo texto)",
+    "motionUsagePermission": "Mantenimiento IPF no usa los sensores de movimiento de tu dispositivo.",
+    "isAndroidBackgroundLocationEnabled": false,
+    "isIosBackgroundLocationEnabled": false
+  }],
   ["expo-image-picker", {
     "photosPermission": "Usamos tus fotos solo cuando elegís una imagen del desperfecto para adjuntarla al reporte.",
-    "cameraPermission": "Usamos tu cámara para sacar la foto del desperfecto que vas a reportar.",
+    "cameraPermission": "(mismo texto que expo-camera)",  // ¡nunca false! bloquearía CAMERA en Android
     "microphonePermission": false
   }],
   ["expo-notifications", { "color": "#208AEF" }]

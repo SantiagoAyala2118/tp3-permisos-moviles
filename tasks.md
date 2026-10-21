@@ -23,7 +23,7 @@
 | TASK | Módulo | Cubre | Estado |
 |---|---|---|---|
 | 1 | Respuestas teóricas `RESPUESTAS.md` | §4 (A–F), E-2 | ✅ |
-| 2 | Dependencias y `app.json` | RT-1…RT-4 | ⬜ |
+| 2 | Dependencias y `app.json` | RT-1…RT-4 | ✅ |
 | 3 | Lógica de permisos + hooks base | RF-1 | ⬜ |
 | 4 | Limpieza de plantilla + layouts y rutas vacías | RT-5, G1 | ⬜ |
 | 5 | Reportes: contexto, Inicio, Nuevo y Detalle | RF-7, G1 | ⬜ |
@@ -64,13 +64,20 @@
 **Cubre:** RT-1, RT-2, RT-3, RT-4.
 **Archivos:** `package.json`, `package-lock.json`, `app.json`.
 
-- [ ] `npx expo install expo-camera expo-location expo-image-picker expo-notifications @expo/vector-icons`.
-- [ ] Verificar en docs v57 las opciones de cada config plugin.
-- [ ] Agregar los 4 plugins con textos de propósito "Usamos tu [dato] para [beneficio concreto]" (plan §7).
-- [ ] `microphonePermission: false` y `recordAudioAndroid: false` en `expo-camera`; `microphonePermission: false` en `expo-image-picker`.
-- [ ] `android.blockedPermissions` con la lista de plan §7.
-- [ ] Confirmar que **no** existe `expo-permissions` en `package.json`.
-- [ ] `npx expo-doctor` sin problemas.
+- [x] `npx expo install expo-camera expo-location expo-image-picker expo-notifications @expo/vector-icons`.
+- [x] Verificar en docs v57 las opciones de cada config plugin (también se revisó el código de cada plugin en `node_modules`).
+- [x] Agregar los 4 plugins con textos de propósito "Usamos tu [dato] para [beneficio concreto]" (plan §7).
+- [x] `microphonePermission: false` y `recordAudioAndroid: false` en `expo-camera`; `microphonePermission: false` en `expo-image-picker`.
+- [x] `android.blockedPermissions` con la lista de plan §7.
+- [x] Confirmar que **no** existe `expo-permissions` en `package.json`.
+- [x] `npx expo-doctor` sin problemas (21/21).
+
+**Notas de cierre:**
+- `npx expo config --type introspect` confirma el resultado. Android declara INTERNET, VIBRATE, CAMERA y ubicación COARSE/FINE, y quita con `tools:node="remove"` los 8 permisos bloqueados. En iOS no queda clave de micrófono.
+- `expo-location` escribe igual las claves de ubicación "siempre" y de movimiento (Apple las exige porque la librería contiene esas APIs; ver C2 d). Se reemplazó el texto genérico en inglés por uno honesto en español en vez de borrarlas, para evitar el rechazo ITMS-90683.
+- El nombre visible de la app pasó a "Mantenimiento IPF" (el `slug` no cambia).
+- La primera corrida de `npx expo lint` configuró ESLint (`eslint.config.js`, `eslint` y `eslint-config-expo`).
+- Lint y typecheck solo marcan errores en archivos de la plantilla (`use-color-scheme.web.ts`, `animated-icon.web.tsx`, `theme.ts`), que se borran en TASK 4.
 
 **Hecho cuando:** la app arranca con `npx expo start` y `app.json` tiene los 4 plugins y los permisos bloqueados.
 
