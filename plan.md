@@ -42,6 +42,7 @@ src/
 │   ├── PantallaPrevia.tsx            beneficio + botón único + aclaración de Ajustes
 │   ├── IngresoCodigoManual.tsx       alternativa a la cámara: escribir el código del aula
 │   ├── TarjetaReporte.tsx
+│   ├── TarjetaAviso.tsx
 │   ├── EtiquetaEstado.tsx
 │   ├── FilaDato.tsx
 │   ├── TarjetaPermiso.tsx
@@ -50,7 +51,8 @@ src/
 │   ├── usePermiso.ts                 RF-1 (hook unificado)
 │   ├── useRevisarAlVolver.ts         receta E5 (AppState)
 │   ├── useNavegarConPermiso.ts       "pedir en contexto": abre la pantalla previa o va directo
-│   └── useReportes.ts                acceso al contexto de reportes
+│   ├── useReportes.ts                acceso al contexto de reportes
+│   └── useAvisarResolucion.ts        notificación (10 s) o bandeja /avisos
 └── lib/
     ├── tema.ts                       colores y espaciados
     ├── permisos/

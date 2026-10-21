@@ -31,7 +31,7 @@
 | 7 | Escáner QR | RF-2 | ✅ (falta prueba manual) |
 | 8 | Foto del desperfecto | RF-3 | ✅ (falta prueba manual) |
 | 9 | Ubicación | RF-4 | ✅ (falta prueba manual) |
-| 10 | Notificaciones, Avisos y Ajustes de la app | RF-5 | ⬜ |
+| 10 | Notificaciones, Avisos y Ajustes de la app | RF-5 | ✅ (falta prueba manual) |
 | 11 | Panel de permisos | RF-9 | ⬜ |
 | 12 | Pruebas en Expo Go y development build | RT-6, LC-5 | ⬜ |
 | 13 | README y capturas | E-1, E-3, E-4 | ⬜ |
@@ -251,12 +251,21 @@
 **Cubre:** RF-5 (+ alternativa de RF-7).
 **Archivos:** `src/lib/notificaciones/configurarManejadorNotificaciones.ts`, `programarAvisoResolucion.ts`, `src/app/_layout.tsx`, `src/app/ajustes-app.tsx`, `src/app/(tabs)/avisos.tsx`, `src/app/reporte/[id].tsx`.
 
-- [ ] Manejador de notificaciones en el layout raíz.
-- [ ] `/ajustes-app`: interruptor; **único** lugar que pide el permiso (vía pantalla previa); canal "reportes" creado antes de pedir.
-- [ ] "Simular resolución": concedido + interruptor activo → notificación local a los 10 s; si no → aviso en `/avisos`.
-- [ ] `/avisos`: lista de avisos o mensaje de bandeja vacía.
+- [x] Manejador de notificaciones en el layout raíz.
+- [x] `/ajustes-app`: interruptor; **único** lugar que pide el permiso (vía pantalla previa); canal "reportes" creado antes de pedir.
+- [x] "Simular resolución": concedido + interruptor activo → notificación local a los 10 s; si no → aviso en `/avisos`.
+- [x] `/avisos`: lista de avisos o mensaje de bandeja vacía.
 
 **Hecho cuando:** la notificación llega a los 10 s con permiso, y sin permiso el aviso aparece en la pestaña Avisos.
+
+**Notas de cierre:**
+- `configurarManejadorNotificaciones()` se ejecuta una vez en `src/app/_layout.tsx`, con `shouldShowBanner` y `shouldShowList`.
+- `programarAvisoResolucion` usa `SchedulableTriggerInputTypes.TIME_INTERVAL` (10 s) y `channelId: 'reportes'`. Antes vuelve a crear el canal, porque en Android ≤ 12 el permiso viene concedido sin haber pasado por la pantalla previa.
+- Hook nuevo `useAvisarResolucion`: decide entre **notificación** (interruptor activo + permiso concedido) y **bandeja** (en cualquier otro caso, o si falla la programación). El detalle muestra por cuál de los dos se avisó.
+- El interruptor se ve prendido solo si la persona lo activó **y** el sistema lo permite. Si está activado pero denegado, aclara: "te avisamos en la pestaña Avisos".
+- Componente nuevo `TarjetaAviso`. Al tocarla, abre el reporte.
+- Revisión en el código: el único lugar que pide notificaciones es `/ajustes-app` (RF-5).
+- Lint y typecheck: 0 errores. El bundle de Android compila. Falta la prueba manual (en Expo Go las notificaciones **locales** funcionan).
 
 ---
 
@@ -268,6 +277,7 @@
 - [ ] Una tarjeta por recurso: estado (concedido / preguntable / bloqueado / parcial), `Platform.OS`, matiz (`accessPrivileges`, `accuracy`).
 - [ ] Botón según estado: "Continuar" (abre pantalla previa) / "Abrir Ajustes"; galería como "No se pide: usamos el selector del sistema".
 - [ ] Se actualiza al volver de Ajustes.
+- [ ] ⚠️ En la tarjeta de notificaciones, el botón lleva a `/ajustes-app` en lugar de pedir el permiso directo: RF-5 exige que se pida **solo** desde el interruptor.
 
 **Hecho cuando:** cambiar un permiso en Ajustes y volver actualiza el panel.
 

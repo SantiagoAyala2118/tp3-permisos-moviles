@@ -1,8 +1,12 @@
 import { DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
+import configurarManejadorNotificaciones from '@/lib/notificaciones/configurarManejadorNotificaciones';
 import ReportesProveedor from '@/lib/reportes/ReportesProveedor';
 import tema from '@/lib/tema';
+
+// Una sola vez al iniciar: cómo se muestran las notificaciones con la app abierta.
+configurarManejadorNotificaciones();
 
 const temaNavegacion = {
   ...DefaultTheme,

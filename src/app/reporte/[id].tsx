@@ -1,11 +1,13 @@
 import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
+import { useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
 import BotonPrincipal from '@/components/BotonPrincipal';
 import ContenedorPantalla from '@/components/ContenedorPantalla';
 import EtiquetaEstado from '@/components/EtiquetaEstado';
 import FilaDato from '@/components/FilaDato';
+import useAvisarResolucion from '@/hooks/useAvisarResolucion';
 import useReportes from '@/hooks/useReportes';
 import describirLugar from '@/lib/reportes/describirLugar';
 import etiquetasReportes from '@/lib/reportes/etiquetasReportes';
@@ -15,6 +17,8 @@ import tema from '@/lib/tema';
 export default function PantallaDetalleReporte() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { buscarReporte, marcarResuelto } = useReportes();
+  const { avisarResolucion, segundosHastaElAviso } = useAvisarResolucion();
+  const [mensajeAviso, setMensajeAviso] = useState<string | null>(null);
 
   const reporte = typeof id === 'string' ? buscarReporte(id) : undefined;
 
@@ -31,6 +35,17 @@ export default function PantallaDetalleReporte() {
   }
 
   const estaResuelto = reporte.estado === 'resuelto';
+
+  /** Botón de prueba: marca el reporte como resuelto y avisa por notificación o en la bandeja. */
+  const simularResolucion = async () => {
+    marcarResuelto(reporte.id);
+    const canal = await avisarResolucion(reporte);
+    setMensajeAviso(
+      canal === 'notificacion'
+        ? `Listo: en ${segundosHastaElAviso} segundos te llega la notificación.`
+        : 'Listo: dejamos el aviso en la pestaña “Avisos”.',
+    );
+  };
 
   return (
     <ContenedorPantalla>
@@ -56,8 +71,9 @@ export default function PantallaDetalleReporte() {
         titulo={estaResuelto ? 'Reporte resuelto' : 'Simular resolución'}
         variante="secundario"
         deshabilitado={estaResuelto}
-        alPresionar={() => marcarResuelto(reporte.id)}
+        alPresionar={simularResolucion}
       />
+      {mensajeAviso ? <Text style={estilos.texto}>{mensajeAviso}</Text> : null}
     </ContenedorPantalla>
   );
 }
