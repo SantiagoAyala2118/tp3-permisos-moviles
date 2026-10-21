@@ -24,7 +24,7 @@
 |---|---|---|---|
 | 1 | Respuestas teóricas `RESPUESTAS.md` | §4 (A–F), E-2 | ✅ |
 | 2 | Dependencias y `app.json` | RT-1…RT-4 | ✅ |
-| 3 | Lógica de permisos + hooks base | RF-1 | ⬜ |
+| 3 | Lógica de permisos + hooks base | RF-1 | ✅ |
 | 4 | Limpieza de plantilla + layouts y rutas vacías | RT-5, G1 | ⬜ |
 | 5 | Reportes: contexto, Inicio, Nuevo y Detalle | RF-7, G1 | ⬜ |
 | 6 | Pantalla previa y "pedir en contexto" | RF-6, RF-8 | ⬜ |
@@ -88,16 +88,21 @@
 **Cubre:** RF-1 (hook unificado), LC-2.
 **Archivos:** `src/lib/permisos/*` (tipos, `clasificarRespuesta`, `esAccesoParcial`, 4 adaptadores, `registroAdaptadores`, `textosPermisos`), `src/lib/notificaciones/crearCanalReportes.ts`, `src/hooks/useRevisarAlVolver.ts`, `src/hooks/usePermiso.ts`.
 
-- [ ] Tipos `Recurso`, `EstadoPermiso`, `RespuestaPermiso`, `AdaptadorPermiso`.
-- [ ] `clasificarRespuesta` (null → cargando, granted → concedido, canAskAgain → preguntable, si no → bloqueado).
-- [ ] `esAccesoParcial` (`accessPrivileges: 'limited'`, `android.accuracy: 'coarse'`, `ios.accuracy: 'reduced'`).
-- [ ] Adaptadores: cámara, ubicación (solo primer plano), notificaciones (crea canal "reportes" antes de pedir), galería (solo consulta).
-- [ ] Registro recurso → adaptador.
-- [ ] `textosPermisos`: beneficio en una frase, aclaración de Ajustes y pasos para habilitar por plataforma.
-- [ ] `useRevisarAlVolver` (receta E5).
-- [ ] `usePermiso(recurso)` → `{ estado, parcial, respuesta, seSolicita, pedir, abrirAjustes, consultar }`, refresco con `AppState` y al enfocar la pantalla.
+- [x] Tipos `Recurso`, `EstadoPermiso`, `RespuestaPermiso`, `AdaptadorPermiso`.
+- [x] `clasificarRespuesta` (null → cargando, granted → concedido, canAskAgain → preguntable, si no → bloqueado).
+- [x] `esAccesoParcial` (`accessPrivileges: 'limited'`, `android.accuracy: 'coarse'`, `ios.accuracy: 'reduced'`).
+- [x] Adaptadores: cámara, ubicación (solo primer plano), notificaciones (crea canal "reportes" antes de pedir), galería (solo consulta).
+- [x] Registro recurso → adaptador.
+- [x] `textosPermisos`: beneficio en una frase, aclaración de Ajustes y pasos para habilitar por plataforma.
+- [x] `useRevisarAlVolver` (receta E5).
+- [x] `usePermiso(recurso)` → `{ estado, parcial, respuesta, seSolicita, pedir, abrirAjustes, consultar }`, refresco con `AppState` y al enfocar la pantalla.
 
 **Hecho cuando:** lint y typecheck pasan; ninguna función pide permisos al montar.
+
+**Notas de cierre:**
+- La cámara se consulta con `Camera.get/requestCameraPermissionsAsync` de `expo-camera`, el mismo permiso del sistema que usa `ImagePicker.launchCameraAsync`.
+- `usePermiso` consulta con `useFocusEffect`, que cubre tanto el montaje como el regreso desde el modal, y además con `useRevisarAlVolver`, que cubre el regreso desde Ajustes.
+- Lint y typecheck de los archivos nuevos: sin errores. Solo siguen los 3 errores de la plantilla, que se borra en TASK 4.
 
 ---
 
