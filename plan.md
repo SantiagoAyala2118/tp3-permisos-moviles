@@ -40,6 +40,7 @@ src/
 │   ├── CampoTexto.tsx
 │   ├── VistaCargando.tsx
 │   ├── PantallaPrevia.tsx            beneficio + botón único + aclaración de Ajustes
+│   ├── IngresoCodigoManual.tsx       alternativa a la cámara: escribir el código del aula
 │   ├── TarjetaReporte.tsx
 │   ├── EtiquetaEstado.tsx
 │   ├── FilaDato.tsx

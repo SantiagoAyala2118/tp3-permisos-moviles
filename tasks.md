@@ -28,7 +28,7 @@
 | 4 | Limpieza de plantilla + layouts y rutas vacías | RT-5, G1 | ✅ (falta prueba manual) |
 | 5 | Reportes: contexto, Inicio, Nuevo y Detalle | RF-7, G1 | ✅ (falta prueba manual) |
 | 6 | Pantalla previa y "pedir en contexto" | RF-6, RF-8 | ✅ (falta prueba manual) |
-| 7 | Escáner QR | RF-2 | ⬜ |
+| 7 | Escáner QR | RF-2 | ✅ (falta prueba manual) |
 | 8 | Foto del desperfecto | RF-3 | ⬜ |
 | 9 | Ubicación | RF-4 | ⬜ |
 | 10 | Notificaciones, Avisos y Ajustes de la app | RF-5 | ⬜ |
@@ -188,12 +188,18 @@
 **Cubre:** RF-2 (+ alternativa de RF-7).
 **Archivos:** `src/app/reporte/escanear.tsx`.
 
-- [ ] `useCameraPermissions()` + `useRevisarAlVolver(consultarPermiso)` + `clasificarRespuesta`.
-- [ ] 4 estados: `VistaCargando` / `CameraView` (QR) / `PantallaPrevia` "Continuar" / `PantallaPrevia` "Abrir Ajustes".
-- [ ] Lectura única del QR (`useRef`), guarda el aula en el borrador y vuelve al formulario.
-- [ ] En preguntable y bloqueado: campo "Escribir el código del aula a mano".
+- [x] `useCameraPermissions()` + `useRevisarAlVolver(consultarPermiso)` + `clasificarRespuesta`.
+- [x] 4 estados: `VistaCargando` / `CameraView` (QR) / `PantallaPrevia` "Continuar" / `PantallaPrevia` "Abrir Ajustes".
+- [x] Lectura única del QR (`useRef`), guarda el aula en el borrador y vuelve al formulario.
+- [x] En preguntable y bloqueado: campo "Escribir el código del aula a mano".
 
 **Hecho cuando:** se ven los 4 estados y el aula se completa por QR o a mano.
+
+**Notas de cierre:**
+- El `switch` sobre `clasificarRespuesta(permiso)` deja los 4 estados a la vista, uno por `case`, para la defensa oral. Es la misma función que usa `usePermiso`.
+- Componente nuevo `IngresoCodigoManual` (campo + "Usar este código"). Aparece en preguntable y bloqueado (lo que pide RF-2) y también debajo de la cámara, por si el QR está roto o falta.
+- El código leído se recorta a 40 caracteres y se guarda en `borrador.aula`. Después vuelve al formulario.
+- Lint y typecheck: 0 errores. El bundle de Android compila. Falta la prueba manual de los 4 estados (para "bloqueado" en Android: denegar dos veces).
 
 ---
 
