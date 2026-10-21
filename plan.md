@@ -20,7 +20,7 @@ src/
 ├── app/                              ← SOLO rutas (cada archivo = una URL)
 │   ├── _layout.tsx                   Stack raíz + ReportesProveedor + manejador de notificaciones
 │   ├── (tabs)/
-│   │   ├── _layout.tsx               Tabs: "Reportes", "Avisos", "Permisos"
+│   │   ├── _layout.tsx               Tabs (expo-router/js-tabs): "Reportes", "Avisos", "Permisos"
 │   │   ├── index.tsx                 →  /
 │   │   ├── avisos.tsx                →  /avisos
 │   │   └── permisos.tsx              →  /permisos
@@ -35,6 +35,8 @@ src/
 │   └── ajustes-app.tsx               →  /ajustes-app
 ├── components/                       ← piezas visuales reutilizables (sin lógica de permisos)
 │   ├── BotonPrincipal.tsx
+│   ├── ContenedorPantalla.tsx        fondo, márgenes y scroll comunes
+│   ├── PantallaEnConstruccion.tsx    provisorio (TASK 4), se borra al final
 │   ├── CampoTexto.tsx
 │   ├── VistaCargando.tsx
 │   ├── PantallaPrevia.tsx            beneficio + botón único + aclaración de Ajustes

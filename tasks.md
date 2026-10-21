@@ -25,7 +25,7 @@
 | 1 | Respuestas teóricas `RESPUESTAS.md` | §4 (A–F), E-2 | ✅ |
 | 2 | Dependencias y `app.json` | RT-1…RT-4 | ✅ |
 | 3 | Lógica de permisos + hooks base | RF-1 | ✅ |
-| 4 | Limpieza de plantilla + layouts y rutas vacías | RT-5, G1 | ⬜ |
+| 4 | Limpieza de plantilla + layouts y rutas vacías | RT-5, G1 | ✅ (falta prueba manual) |
 | 5 | Reportes: contexto, Inicio, Nuevo y Detalle | RF-7, G1 | ⬜ |
 | 6 | Pantalla previa y "pedir en contexto" | RF-6, RF-8 | ⬜ |
 | 7 | Escáner QR | RF-2 | ⬜ |
@@ -111,13 +111,21 @@
 **Cubre:** RT-5, G1 (árbol de rutas).
 **Archivos:** borrar `src/app/index.tsx`, `src/app/explore.tsx`, componentes y hooks de la plantilla que no se usan; crear `src/lib/tema.ts`, `src/app/_layout.tsx`, `src/app/(tabs)/_layout.tsx` y **todas** las rutas de plan §2 con un contenido mínimo (título de la pantalla).
 
-- [ ] Verificar en docs de Expo Router v57: `Stack`, `Tabs`, `presentation: 'modal'`, `useFocusEffect`, typed routes.
-- [ ] Stack raíz: grupo `(tabs)` sin encabezado, pantallas `reporte/*`, `ajustes-app` y `permisos/[recurso]` como `modal`.
-- [ ] Tabs "Reportes" (`/`), "Avisos" (`/avisos`), "Permisos" (`/permisos`) con íconos.
-- [ ] Componentes base: `BotonPrincipal`, `CampoTexto`, `VistaCargando`.
-- [ ] Navegar manualmente a las 10 URLs y comprobar que todas responden.
+- [x] Verificar en docs de Expo Router v57: `Stack`, `Tabs`, `presentation: 'modal'`, `useFocusEffect`, typed routes.
+- [x] Stack raíz: grupo `(tabs)` sin encabezado, pantallas `reporte/*`, `ajustes-app` y `permisos/[recurso]` como `modal`.
+- [x] Tabs "Reportes" (`/`), "Avisos" (`/avisos`), "Permisos" (`/permisos`) con íconos.
+- [x] Componentes base: `BotonPrincipal`, `CampoTexto`, `VistaCargando`.
+- [ ] Navegar manualmente a las 10 URLs y comprobar que todas responden. *(lo hace Santiago con `npx expo start`; Inicio trae una lista provisoria de enlaces para probarlas)*
 
 **Hecho cuando:** las 10 URLs de spec §5.1 existen y la plantilla original ya no está.
+
+**Notas de cierre:**
+- En SDK 57, `Tabs` de `expo-router` está deprecado: se usa `import { Tabs } from 'expo-router/js-tabs'`. `Stack` sigue en `expo-router`.
+- Se sumaron dos componentes base: `ContenedorPantalla` (fondo, márgenes y scroll) y `PantallaEnConstruccion` (provisorio: se elimina cuando todas las rutas tengan contenido real).
+- `app.json`: `userInterfaceStyle` pasó a `"light"`, porque la app usa una sola paleta clara (`src/lib/tema.ts`).
+- El ícono de ajustes en el encabezado de "Reportes" lleva a `/ajustes-app`.
+- Lint y typecheck: 0 errores. `npx expo export --platform android` compila el bundle sin errores.
+- Las imágenes de la plantilla en `assets/images` (react-logo, tabIcons, etc.) quedan sin uso. Se pueden borrar más adelante.
 
 ---
 
