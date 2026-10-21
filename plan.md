@@ -41,9 +41,10 @@ src/
 │   ├── VistaCargando.tsx
 │   ├── PantallaPrevia.tsx            beneficio + botón único + aclaración de Ajustes
 │   ├── TarjetaReporte.tsx
+│   ├── EtiquetaEstado.tsx
+│   ├── FilaDato.tsx
 │   ├── TarjetaPermiso.tsx
-│   ├── SelectorCategoria.tsx
-│   └── SelectorSector.tsx
+│   └── SelectorOpciones.tsx          chips genéricos (categoría y sector)
 ├── hooks/
 │   ├── usePermiso.ts                 RF-1 (hook unificado)
 │   ├── useRevisarAlVolver.ts         receta E5 (AppState)
@@ -69,7 +70,11 @@ src/
     │   └── programarAvisoResolucion.ts
     └── reportes/
         ├── tipos.ts                  Reporte, Borrador, Aviso, Categoria, Sector, EstadoReporte
-        ├── reportesIniciales.ts      datos de ejemplo (uno por estado)
+        ├── estadoInicialReportes.ts  datos de ejemplo (uno por estado) + borrador vacío
+        ├── etiquetasReportes.ts      textos visibles de categorías, sectores y estados
+        ├── validarBorrador.ts
+        ├── describirLugar.ts         "Ubicación aproximada" / coordenadas / sector
+        ├── generarId.ts
         ├── reducerReportes.ts
         └── ReportesProveedor.tsx     Context + useReducer
 ```

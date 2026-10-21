@@ -26,7 +26,7 @@
 | 2 | Dependencias y `app.json` | RT-1…RT-4 | ✅ |
 | 3 | Lógica de permisos + hooks base | RF-1 | ✅ |
 | 4 | Limpieza de plantilla + layouts y rutas vacías | RT-5, G1 | ✅ (falta prueba manual) |
-| 5 | Reportes: contexto, Inicio, Nuevo y Detalle | RF-7, G1 | ⬜ |
+| 5 | Reportes: contexto, Inicio, Nuevo y Detalle | RF-7, G1 | ✅ (falta prueba manual) |
 | 6 | Pantalla previa y "pedir en contexto" | RF-6, RF-8 | ⬜ |
 | 7 | Escáner QR | RF-2 | ⬜ |
 | 8 | Foto del desperfecto | RF-3 | ⬜ |
@@ -134,14 +134,26 @@
 **Cubre:** RF-7 (nunca se bloquea), G1 (`/`, `/reporte/nuevo`, `/reporte/[id]`).
 **Archivos:** `src/lib/reportes/*`, `src/hooks/useReportes.ts`, `src/components/TarjetaReporte.tsx`, `SelectorCategoria.tsx`, `src/app/(tabs)/index.tsx`, `src/app/reporte/nuevo.tsx`, `src/app/reporte/[id].tsx`.
 
-- [ ] Tipos: `Reporte`, `Borrador`, `Aviso`, `Categoria` (electricidad, agua, mobiliario, equipos), `Sector`, `EstadoReporte` (pendiente, en_curso, resuelto).
-- [ ] `ReportesProveedor` con reducer: `actualizarBorrador`, `limpiarBorrador`, `crearReporte`, `marcarResuelto`, `agregarAviso`, `cambiarPreferenciaAvisos`.
-- [ ] Datos de ejemplo (uno por estado).
-- [ ] Inicio: lista + botón "Nuevo reporte" + acceso a `/ajustes-app`.
-- [ ] Nuevo: título, descripción, aula (editable a mano), categoría; botones a escanear / foto / ubicación (por ahora navegación directa); "Guardar" con validación. **Sin pedir permisos al abrir.**
-- [ ] Detalle: validar `id`, mensaje si no existe, mostrar datos. Botón "Simular resolución" (por ahora solo cambia el estado; las notificaciones se conectan en TASK 10).
+- [x] Tipos: `Reporte`, `Borrador`, `Aviso`, `Categoria` (electricidad, agua, mobiliario, equipos), `Sector`, `EstadoReporte` (pendiente, en_curso, resuelto).
+- [x] `ReportesProveedor` con reducer: `actualizarBorrador`, `limpiarBorrador`, `crearReporte`, `marcarResuelto`, `agregarAviso`, `cambiarPreferenciaAvisos`.
+- [x] Datos de ejemplo (uno por estado).
+- [x] Inicio: lista + botón "Nuevo reporte" + acceso a `/ajustes-app`.
+- [x] Nuevo: título, descripción, aula (editable a mano), categoría; botones a escanear / foto / ubicación (por ahora navegación directa); "Guardar" con validación. **Sin pedir permisos al abrir.**
+- [x] Detalle: validar `id`, mensaje si no existe, mostrar datos. Botón "Simular resolución" (por ahora solo cambia el estado; las notificaciones se conectan en TASK 10).
 
 **Hecho cuando:** se puede crear un reporte sin usar ningún permiso y verlo en Inicio y en su detalle; `/reporte/xyz` muestra el mensaje de "no existe".
+
+**Notas de cierre:**
+- En lugar de `SelectorCategoria` y `SelectorSector` por separado se hizo un único `SelectorOpciones` genérico. La categoría lo usa ya, y el sector lo va a usar en TASK 9.
+- Archivos extra de `src/lib/reportes`, cada uno con una sola responsabilidad:
+  - `etiquetasReportes` (textos visibles)
+  - `validarBorrador`
+  - `describirLugar` (muestra "Ubicación aproximada" en vez de coordenadas, para RF-4)
+  - `generarId`
+- Componentes extra: `EtiquetaEstado` y `FilaDato`.
+- Al guardar, el reporte nuevo abre su detalle (`router.replace`) y el borrador se limpia.
+- Se quitó la lista provisoria de enlaces de Inicio. Las rutas que siguen en construcción se alcanzan desde los tabs y desde el formulario.
+- Lint y typecheck: 0 errores. El bundle de Android compila. Falta la prueba manual en el dispositivo.
 
 ---
 
