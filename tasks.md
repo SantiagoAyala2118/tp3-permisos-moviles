@@ -33,7 +33,7 @@
 | 9 | Ubicación | RF-4 | ✅ (falta prueba manual) |
 | 10 | Notificaciones, Avisos y Ajustes de la app | RF-5 | ✅ (falta prueba manual) |
 | 11 | Panel de permisos | RF-9 | ✅ (falta prueba manual) |
-| 12 | Pruebas en Expo Go y development build | RT-6, LC-5 | ⬜ |
+| 12 | Pruebas en Expo Go y development build | RT-6, LC-5 | 🟡 preparado, faltan las pruebas en el celular |
 | 13 | README y capturas | E-1, E-3, E-4 | ⬜ |
 | 14 | Desafíos opcionales | OP-1…OP-4 | ⬜ |
 | 15 | Preparación de la defensa oral | §5.6 | ⬜ |
@@ -297,15 +297,39 @@
 ## TASK 12 — Pruebas en Expo Go y development build
 
 **Cubre:** RT-6, LC-5.
-**Archivos:** `package.json` (`expo-dev-client`), `eas.json` si se usa EAS.
+**Archivos:** `package.json` (`expo-dev-client`), `eas.json`, `app.json` (identificadores), `PRUEBAS.md`.
 
+**Preparación (Claude):**
+- [x] `npx expo install expo-dev-client`.
+- [x] `app.json`: `android.package` e `ios.bundleIdentifier` = `com.santiagoayala.mantenimientoipf`. Hacen falta para compilar.
+- [x] `eas.json` con los perfiles `development` (dev client, distribución interna, APK), `preview` y `production`.
+- [x] Auditoría con `npx expo prebuild --clean --platform android --no-install`. La carpeta `android/` se borró después (CNG), y se restauraron los scripts de `package.json` que prebuild había cambiado.
+- [x] `PRUEBAS.md`: guía paso a paso por requisito, con las capturas que pide el README.
+- [x] `npx expo lint`, `npx tsc --noEmit` y `npx expo-doctor` (21/21) sin errores.
+
+**Pruebas (Santiago, siguiendo `PRUEBAS.md`):**
 - [ ] Recorrido completo en Expo Go (todas las ramas de RF-1…RF-9; con todos los permisos denegados se crea un reporte → RF-7).
-- [ ] `npx expo install expo-dev-client` y dev build Android (`npx expo run:android` o `npx eas-cli@latest build --profile development --platform android`).
-- [ ] Reset de permisos con `adb` entre pruebas.
-- [ ] `npx expo lint`, `npx tsc --noEmit`, `npx expo-doctor` finales.
-- [ ] Corregir lo que aparezca.
+- [ ] `npx eas-cli@latest login`, `npx eas-cli@latest init` y `npx eas-cli@latest build --profile development --platform android`. Después, instalar el APK.
+- [ ] Repetir las pruebas clave en la development build y verificar que en Ajustes solo aparezcan Cámara, Ubicación y Notificaciones.
+- [ ] Reset de permisos entre pruebas: reinstalar, o `adb` si se instalan las Platform-Tools.
+- [ ] Corregir lo que aparezca (anotado en la tabla final de `PRUEBAS.md`).
 
 **Hecho cuando:** la app funciona en Expo Go y en la dev build. *(Santiago ejecuta las pruebas en su dispositivo; Claude guía y corrige.)*
+
+**Notas de cierre (preparación):**
+- La PC no tiene el SDK de Android, `adb` ni Java. Por eso la dev build se compila **en la nube con EAS** y no con `npx expo run:android`.
+- Auditoría del manifiesto (base para OP-1 en TASK 14):
+  - **`app.json` genera:** INTERNET, VIBRATE, CAMERA, ACCESS_COARSE_LOCATION y ACCESS_FINE_LOCATION, y quita con `tools:node="remove"` los 8 bloqueados.
+  - **Lo que suman las librerías al compilar** (`android/src/main/AndroidManifest.xml` de cada módulo):
+
+    | Librería | Permisos que agrega |
+    |---|---|
+    | `expo-camera` | CAMERA |
+    | `expo-location` | COARSE y FINE |
+    | `expo-notifications` | POST_NOTIFICATIONS y RECEIVE_BOOT_COMPLETED |
+    | `expo-image` | ACCESS_NETWORK_STATE, INTERNET y READ_EXTERNAL_STORAGE (bloqueado) |
+    | `expo-image-picker` | CAMERA, READ_EXTERNAL_STORAGE y WRITE_EXTERNAL_STORAGE (ambos bloqueados) |
+    | `expo-file-system` | INTERNET, READ_EXTERNAL_STORAGE y WRITE_EXTERNAL_STORAGE (ambos bloqueados) |
 
 ---
 

@@ -8,9 +8,11 @@
     "scheme": "tp3permisosmoviles",
     "userInterfaceStyle": "light",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "bundleIdentifier": "com.santiagoayala.mantenimientoipf"
     },
     "android": {
+      "package": "com.santiagoayala.mantenimientoipf",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
