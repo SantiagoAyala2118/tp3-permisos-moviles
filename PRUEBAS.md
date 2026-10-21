@@ -27,6 +27,8 @@ Recorrido para comprobar en el celular **cada requisito** de [spec.md](spec.md) 
 
 > ⚠️ **La versión web (`w` en la terminal) no sirve para probar permisos:** en el navegador, el escáner de QR descarga un archivo desde un CDN que tu red bloquea, y los permisos los maneja el navegador, no Android/iOS. La consigna pide probar en **Expo Go** y en una **development build**.
 
+> ⚠️ **Cambiar permisos en Ajustes y volver puede no reflejarse en Expo Go.** Los permisos son de la app **Expo Go** (no existe "Mantenimiento IPF" hasta instalar la development build), y en Android Expo Go además guarda su propia decisión **por proyecto**: a veces ignora lo que cambiás en Ajustes. Para resetear todo: Ajustes → Apps → Expo Go → Almacenamiento → **Borrar datos**. La prueba "volver de Ajustes" (panel antes/después) hacela en la **development build**.
+
 > ⚠️ En Expo Go los **diálogos son los de Expo Go**: no aparecen nuestros textos de propósito y `blockedPermissions` no aplica. Los permisos que concedas quedan guardados **para Expo Go**, no para nuestra app.
 
 ### 1.2 Development build (nuestra app de verdad)
