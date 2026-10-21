@@ -36,7 +36,6 @@ src/
 ├── components/                       ← piezas visuales reutilizables (sin lógica de permisos)
 │   ├── BotonPrincipal.tsx
 │   ├── ContenedorPantalla.tsx        fondo, márgenes y scroll comunes
-│   ├── PantallaEnConstruccion.tsx    provisorio (TASK 4), se borra al final
 │   ├── CampoTexto.tsx
 │   ├── VistaCargando.tsx
 │   ├── PantallaPrevia.tsx            beneficio + botón único + aclaración de Ajustes
@@ -66,6 +65,8 @@ src/
     │   ├── registroAdaptadores.ts    mapa recurso → adaptador
     │   ├── esRecursoSolicitable.ts   valida el parámetro [recurso] de la URL
     │   ├── obtenerPasosAjustes.ts    camino en Ajustes según Platform.OS
+    │   ├── describirEstadoPermiso.ts texto y color del estado (panel)
+    │   ├── describirMatices.ts       status, canAskAgain, accessPrivileges, accuracy
     │   └── textosPermisos.ts         beneficio, pasos en Ajustes por plataforma
     ├── fotos/
     │   ├── elegirFotoDeGaleria.ts    selector del sistema (sin permiso)

@@ -32,7 +32,7 @@
 | 8 | Foto del desperfecto | RF-3 | ✅ (falta prueba manual) |
 | 9 | Ubicación | RF-4 | ✅ (falta prueba manual) |
 | 10 | Notificaciones, Avisos y Ajustes de la app | RF-5 | ✅ (falta prueba manual) |
-| 11 | Panel de permisos | RF-9 | ⬜ |
+| 11 | Panel de permisos | RF-9 | ✅ (falta prueba manual) |
 | 12 | Pruebas en Expo Go y development build | RT-6, LC-5 | ⬜ |
 | 13 | README y capturas | E-1, E-3, E-4 | ⬜ |
 | 14 | Desafíos opcionales | OP-1…OP-4 | ⬜ |
@@ -274,12 +274,23 @@
 **Cubre:** RF-9, RF-1 (vuelta de Ajustes).
 **Archivos:** `src/components/TarjetaPermiso.tsx`, `src/app/(tabs)/permisos.tsx`.
 
-- [ ] Una tarjeta por recurso: estado (concedido / preguntable / bloqueado / parcial), `Platform.OS`, matiz (`accessPrivileges`, `accuracy`).
-- [ ] Botón según estado: "Continuar" (abre pantalla previa) / "Abrir Ajustes"; galería como "No se pide: usamos el selector del sistema".
-- [ ] Se actualiza al volver de Ajustes.
-- [ ] ⚠️ En la tarjeta de notificaciones, el botón lleva a `/ajustes-app` en lugar de pedir el permiso directo: RF-5 exige que se pida **solo** desde el interruptor.
+- [x] Una tarjeta por recurso: estado (concedido / preguntable / bloqueado / parcial), `Platform.OS`, matiz (`accessPrivileges`, `accuracy`).
+- [x] Botón según estado: "Continuar" (abre pantalla previa) / "Abrir Ajustes"; galería como "No se pide: usamos el selector del sistema".
+- [x] Se actualiza al volver de Ajustes.
+- [x] ⚠️ En la tarjeta de notificaciones, el botón lleva a `/ajustes-app` en lugar de pedir el permiso directo: RF-5 exige que se pida **solo** desde el interruptor.
 
 **Hecho cuando:** cambiar un permiso en Ajustes y volver actualiza el panel.
+
+**Notas de cierre:**
+- Cada recurso es una `TarjetaPermisoDeRecurso` con su propio `usePermiso`, así cada tarjeta se actualiza sola al volver de Ajustes. `TarjetaPermiso` es solo visual.
+- Cada tarjeta muestra el estado (Concedido / Parcial / Preguntable / Bloqueado), `Platform.OS` y los campos crudos (`status`, `canAskAgain`, `accessPrivileges`, `android.accuracy` / `ios.accuracy`), útiles para explicar en la defensa.
+- Botones:
+  - **Preguntable:** "Continuar" abre la pantalla previa.
+  - **Bloqueado:** "Abrir Ajustes".
+  - **Notificaciones:** "Ir a Ajustes de la app", por RF-5.
+  - **Galería:** se muestra como "No se pide".
+- Se borró `PantallaEnConstruccion`, porque todas las rutas ya tienen contenido real.
+- Lint y typecheck: 0 errores. El bundle de Android compila. Falta la prueba manual: capturas del panel antes y después de volver de Ajustes.
 
 ---
 
