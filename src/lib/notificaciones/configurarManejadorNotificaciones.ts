@@ -1,4 +1,4 @@
-import * as Notifications from 'expo-notifications';
+import * as Notifications from './moduloNotificaciones';
 
 /**
  * Define qué hace la app cuando llega una notificación con la app ABIERTA:

@@ -51,10 +51,14 @@ function ContenidoPantallaPrevia({ recurso, destino }: PropsContenido) {
   const { estado, pedir, abrirAjustes } = usePermiso(recurso);
   const textos = textosPermisos[recurso];
 
-  /** Cierra el modal y, si el permiso quedó concedido, sigue a la función que se quería usar. */
-  const volver = (concedido: boolean) => {
+  /**
+   * Cierra el modal y sigue a la función que se quería usar (si hay `destino`).
+   * Se va al destino AUNQUE se haya denegado: esa pantalla muestra su alternativa
+   * (ej.: el escáner ofrece escribir el código a mano) y nunca vuelve a pedir sola (RF-7, RF-8).
+   */
+  const volver = () => {
     router.back();
-    if (concedido && destino) router.push(destino);
+    if (destino) router.push(destino);
   };
 
   if (estado === 'cargando') return <VistaCargando />;
@@ -67,7 +71,7 @@ function ContenidoPantallaPrevia({ recurso, destino }: PropsContenido) {
           titulo="¡Listo!"
           mensaje={`El permiso de ${textos.nombre.toLowerCase()} ya está habilitado.`}
           textoBoton="Continuar"
-          alPresionar={() => volver(true)}
+          alPresionar={volver}
         />
       </ContenedorPantalla>
     );
@@ -92,8 +96,8 @@ function ContenidoPantallaPrevia({ recurso, destino }: PropsContenido) {
 
   // Preguntable: el diálogo del sistema aparece recién al tocar "Continuar".
   const continuar = async () => {
-    const respuesta = await pedir();
-    volver(respuesta.granted);
+    await pedir();
+    volver();
   };
 
   return (

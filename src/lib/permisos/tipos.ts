@@ -1,5 +1,5 @@
 import type { PermissionResponse } from 'expo';
-import type { IosAuthorizationStatus } from 'expo-notifications';
+import type { IosAuthorizationStatus } from '@/lib/notificaciones/moduloNotificaciones';
 
 /** Recursos del dispositivo que maneja la app. */
 export type Recurso = 'camara' | 'ubicacion' | 'notificaciones' | 'galeria';

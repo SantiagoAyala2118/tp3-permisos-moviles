@@ -1,5 +1,7 @@
 # PRUEBAS.md — Guía de pruebas manuales (TASK 12)
 
+> Este archivo **no es un entregable** de la consigna. Es una guía de apoyo para probar la app y saber qué capturas sacar. Marcar las casillas es opcional. Sirve además como evidencia de RT-6 ("probado en Expo Go y en una development build").
+
 Recorrido para comprobar en el celular **cada requisito** de [spec.md](spec.md) y sacar, de paso, las capturas que pide el README (E-3). Marcá cada casilla a medida que la pruebes.
 
 > 📸 = de ese paso sale una captura para el README. Guardalas en `docs/capturas/` con el nombre que se indica.
@@ -9,12 +11,21 @@ Recorrido para comprobar en el celular **cada requisito** de [spec.md](spec.md) 
 ## 1. Preparación
 
 ### 1.1 Expo Go (prueba de la lógica)
-1. Instalá **Expo Go** en el celular (Play Store / App Store).
-2. En la PC, desde la carpeta del proyecto:
+1. Instalá **Expo Go para SDK 57**. ⚠️ El Expo Go del Play Store/App Store solo soporta el **último** SDK (hoy, el 58). Con ese, nuestro proyecto (SDK 57, como pide la consigna) da error de incompatibilidad.
+   - **Android:** desinstalá el Expo Go del Play Store e instalá la versión 57 desde la página oficial https://expo.dev/go (elegí *SDK 57* → *Android* → *Device*). Ahí está el APK `Expo-Go-57.0.9.apk`.
+   - **iOS:** no permite instalar versiones viejas de Expo Go. Usá la development build.
+2. En la PC, desde la carpeta del proyecto, arrancá el servidor **en modo Expo Go** (`--go`):
    ```bash
-   npx expo start
+   npx expo start --go
    ```
-3. Escaneá el QR con Expo Go (celular y PC en la misma red Wi-Fi; si no conecta, usá `npx expo start --tunnel`).
+   Desde que instalamos `expo-dev-client`, `npx expo start` a secas genera un QR para la **development build**, no para Expo Go: por eso el celular "salía" de la app. Si ya lo arrancaste sin `--go`, apretá **`s`** en la terminal para cambiar a Expo Go.
+3. Abrí el proyecto:
+   - **Android:** abrí la app Expo Go y usá **"Scan QR code"** desde adentro de Expo Go.
+   - **iOS:** escaneá el QR con la app Cámara.
+   - Si el QR no anda: en Expo Go, **"Enter URL manually"** y escribí la dirección `exp://…` que muestra la terminal.
+   - Celular y PC tienen que estar en la misma red Wi-Fi; si no conecta, usá `npx expo start --go --tunnel`.
+
+> ⚠️ **La versión web (`w` en la terminal) no sirve para probar permisos:** en el navegador, el escáner de QR descarga un archivo desde un CDN que tu red bloquea, y los permisos los maneja el navegador, no Android/iOS. La consigna pide probar en **Expo Go** y en una **development build**.
 
 > ⚠️ En Expo Go los **diálogos son los de Expo Go**: no aparecen nuestros textos de propósito y `blockedPermissions` no aplica. Los permisos que concedas quedan guardados **para Expo Go**, no para nuestra app.
 
@@ -34,10 +45,12 @@ La PC no tiene SDK de Android, así que la build se compila **en la nube con EAS
    npx eas-cli@latest build --profile development --platform android
    ```
 4. Instalar el APK en el celular (permitir "instalar apps desconocidas" si lo pide).
-5. Levantar el servidor y abrir el proyecto desde la app **Mantenimiento IPF** instalada:
+5. Levantar el servidor **sin** `--go` (modo development build):
    ```bash
    npx expo start
    ```
+6. Abrir la app **Mantenimiento IPF** instalada: muestra los servidores de la red, o se escanea el QR **desde adentro de esa app**.
+   ⚠️ No escanees el QR con la cámara del celular: se abre el navegador y da *HTTP ERROR 404* en `/_expo/link`.
 
 ### 1.3 Volver un permiso a "sin decidir"
 - **Lo más simple:** desinstalar y reinstalar la app (en Expo Go: Ajustes → Apps → Expo Go → Almacenamiento → **Borrar datos**).

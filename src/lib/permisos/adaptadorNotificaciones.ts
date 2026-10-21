@@ -1,4 +1,4 @@
-import * as Notifications from 'expo-notifications';
+import * as Notifications from '@/lib/notificaciones/moduloNotificaciones';
 
 import crearCanalReportes from '@/lib/notificaciones/crearCanalReportes';
 

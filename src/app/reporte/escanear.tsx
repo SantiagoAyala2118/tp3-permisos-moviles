@@ -1,7 +1,7 @@
 import { CameraView, useCameraPermissions, type BarcodeScanningResult } from 'expo-camera';
 import { router } from 'expo-router';
 import { useRef } from 'react';
-import { Linking, StyleSheet, Text, View } from 'react-native';
+import { Linking, Platform, StyleSheet, Text, View } from 'react-native';
 
 import ContenedorPantalla from '@/components/ContenedorPantalla';
 import IngresoCodigoManual from '@/components/IngresoCodigoManual';
@@ -51,6 +51,19 @@ export default function PantallaEscanear() {
 
     // 2. Concedido: la cámara lee el QR.
     case 'concedido':
+      // En la web, expo-camera lee QR con un archivo WASM que se descarga de un CDN externo:
+      // si la red lo bloquea, falla en bucle. La app es móvil, así que en la web se escribe a mano.
+      if (Platform.OS === 'web') {
+        return (
+          <ContenedorPantalla>
+            <Text style={estilos.indicacion}>
+              El escáner de QR funciona en el celular. En la versión web, escribí el código del aula.
+            </Text>
+            {ingresoManual}
+          </ContenedorPantalla>
+        );
+      }
+
       return (
         <View style={estilos.pantalla}>
           <CameraView
