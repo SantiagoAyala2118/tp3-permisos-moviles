@@ -30,7 +30,7 @@
 | 6 | Pantalla previa y "pedir en contexto" | RF-6, RF-8 | ✅ (falta prueba manual) |
 | 7 | Escáner QR | RF-2 | ✅ (falta prueba manual) |
 | 8 | Foto del desperfecto | RF-3 | ✅ (falta prueba manual) |
-| 9 | Ubicación | RF-4 | ⬜ |
+| 9 | Ubicación | RF-4 | ✅ (falta prueba manual) |
 | 10 | Notificaciones, Avisos y Ajustes de la app | RF-5 | ⬜ |
 | 11 | Panel de permisos | RF-9 | ⬜ |
 | 12 | Pruebas en Expo Go y development build | RT-6, LC-5 | ⬜ |
@@ -229,14 +229,20 @@
 ## TASK 9 — Ubicación
 
 **Cubre:** RF-4 (+ alternativa de RF-7).
-**Archivos:** `src/lib/ubicacion/obtenerUbicacion.ts`, `src/components/SelectorSector.tsx`, `src/app/reporte/ubicacion.tsx`.
+**Archivos:** `src/lib/ubicacion/obtenerUbicacion.ts`, `src/components/SelectorOpciones.tsx` (reutilizado), `src/app/reporte/ubicacion.tsx`.
 
-- [ ] `obtenerUbicacion()` → `{ latitud, longitud, aproximada } | null` (Android `accuracy: 'coarse'`, iOS `accuracy: 'reduced'`), sin romper si se deniega.
-- [ ] "Usar mi ubicación actual" con `irConPermiso()`.
-- [ ] Aproximada → texto "Ubicación aproximada" (sin coordenadas); precisa → coordenadas.
-- [ ] `SelectorSector` siempre disponible (patio, estacionamiento, pasillo, hall, otro).
+- [x] `obtenerUbicacion()` → `{ latitud, longitud, aproximada } | null` (Android `accuracy: 'coarse'`, iOS `accuracy: 'reduced'`), sin romper si se deniega.
+- [x] "Usar mi ubicación actual" con `irConPermiso()`.
+- [x] Aproximada → texto "Ubicación aproximada" (sin coordenadas); precisa → coordenadas.
+- [x] `SelectorOpciones` de sectores siempre disponible (patio, estacionamiento, pasillo, hall, otro).
 
 **Hecho cuando:** funcionan las 3 ramas (precisa, aproximada, denegada → sector a mano).
+
+**Notas de cierre:**
+- `obtenerUbicacion` **no pide** el permiso: lo pide la pantalla previa. La función solo consulta con `getForegroundPermissionsAsync`, calcula `aproximada` y obtiene la posición con `Accuracy.Balanced`. Si se denegó, o si falla (por ejemplo, con el GPS apagado), devuelve `null`.
+- La ubicación y el sector se excluyen entre sí: elegir uno borra el otro, así el reporte tiene un solo "lugar" claro.
+- `describirLugar` (TASK 5) muestra el texto: "Ubicación aproximada", las coordenadas o el sector.
+- Lint y typecheck: 0 errores. El bundle de Android compila. Falta la prueba manual de las 3 ramas.
 
 ---
 
