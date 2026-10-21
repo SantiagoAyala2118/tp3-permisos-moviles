@@ -65,6 +65,9 @@ src/
     │   ├── esRecursoSolicitable.ts   valida el parámetro [recurso] de la URL
     │   ├── obtenerPasosAjustes.ts    camino en Ajustes según Platform.OS
     │   └── textosPermisos.ts         beneficio, pasos en Ajustes por plataforma
+    ├── fotos/
+    │   ├── elegirFotoDeGaleria.ts    selector del sistema (sin permiso)
+    │   └── sacarFotoConCamara.ts     cámara (requiere permiso)
     ├── ubicacion/
     │   └── obtenerUbicacion.ts       receta E2(c)
     ├── notificaciones/

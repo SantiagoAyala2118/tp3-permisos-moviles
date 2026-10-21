@@ -29,7 +29,7 @@
 | 5 | Reportes: contexto, Inicio, Nuevo y Detalle | RF-7, G1 | ✅ (falta prueba manual) |
 | 6 | Pantalla previa y "pedir en contexto" | RF-6, RF-8 | ✅ (falta prueba manual) |
 | 7 | Escáner QR | RF-2 | ✅ (falta prueba manual) |
-| 8 | Foto del desperfecto | RF-3 | ⬜ |
+| 8 | Foto del desperfecto | RF-3 | ✅ (falta prueba manual) |
 | 9 | Ubicación | RF-4 | ⬜ |
 | 10 | Notificaciones, Avisos y Ajustes de la app | RF-5 | ⬜ |
 | 11 | Panel de permisos | RF-9 | ⬜ |
@@ -208,12 +208,21 @@
 **Cubre:** RF-3 (+ alternativa de RF-7).
 **Archivos:** `src/app/reporte/foto.tsx`, `src/app/reporte/nuevo.tsx` (miniatura).
 
-- [ ] "Elegir de la galería": `ImagePicker.launchImageLibraryAsync({ mediaTypes: ['images'] })` sin pedir permiso.
-- [ ] "Sacar foto": `irConPermiso()` y, con permiso, `ImagePicker.launchCameraAsync()`.
-- [ ] Si la cámara está denegada, indicar que se puede elegir desde el selector.
-- [ ] Vista previa con `expo-image` y guardado de la `uri` en el borrador.
+- [x] "Elegir de la galería": `ImagePicker.launchImageLibraryAsync({ mediaTypes: ['images'] })` sin pedir permiso.
+- [x] "Sacar foto": `irConPermiso()` y, con permiso, `ImagePicker.launchCameraAsync()`.
+- [x] Si la cámara está denegada, indicar que se puede elegir desde el selector.
+- [x] Vista previa con `expo-image` y guardado de la `uri` en el borrador.
 
 **Hecho cuando:** se adjunta una foto desde el selector sin ningún diálogo de permiso.
+
+**Notas de cierre:**
+- Dos funciones (patrón Facade) en `src/lib/fotos/`:
+  - `elegirFotoDeGaleria` llama a `launchImageLibraryAsync` y no pide nada.
+  - `sacarFotoConCamara` llama a `launchCameraAsync`.
+- "Sacar foto" pasa por `irConPermiso()`. Sin permiso abre la pantalla previa, y al volver la persona toca "Sacar foto" otra vez.
+- ⚠️ **Hallazgo:** en Android 9 o anterior, `launchCameraAsync` también exige `WRITE_EXTERNAL_STORAGE` (código nativo de `expo-image-picker`), y la app lo bloquea. Ahí la cámara falla y la pantalla ofrece la galería como alternativa. Documentarlo en el README (TASK 13).
+- La foto se ve en grande con "Listo" y "Quitar foto", y como miniatura en el formulario.
+- Lint y typecheck: 0 errores. El bundle de Android compila. Falta la prueba manual.
 
 ---
 
