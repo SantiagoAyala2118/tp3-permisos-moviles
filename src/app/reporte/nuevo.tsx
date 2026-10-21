@@ -8,6 +8,7 @@ import CampoTexto from '@/components/CampoTexto';
 import ContenedorPantalla from '@/components/ContenedorPantalla';
 import FilaDato from '@/components/FilaDato';
 import SelectorOpciones from '@/components/SelectorOpciones';
+import useNavegarConPermiso from '@/hooks/useNavegarConPermiso';
 import useReportes from '@/hooks/useReportes';
 import describirLugar from '@/lib/reportes/describirLugar';
 import etiquetasReportes from '@/lib/reportes/etiquetasReportes';
@@ -20,6 +21,7 @@ import tema from '@/lib/tema';
  */
 export default function PantallaNuevoReporte() {
   const { borrador, actualizarBorrador, crearReporte } = useReportes();
+  const { irConPermiso: irConCamara } = useNavegarConPermiso('camara');
   const [errores, setErrores] = useState<string[]>([]);
 
   const guardar = () => {
@@ -55,7 +57,7 @@ export default function PantallaNuevoReporte() {
       <BotonPrincipal
         titulo="Escanear QR del aula"
         variante="secundario"
-        alPresionar={() => router.push('/reporte/escanear')}
+        alPresionar={() => irConCamara('/reporte/escanear')}
       />
 
       <SelectorOpciones

@@ -35,7 +35,8 @@ export default function LayoutRaiz() {
           <Stack.Screen name="ajustes-app" options={{ title: 'Ajustes de la app' }} />
           <Stack.Screen
             name="permisos/[recurso]"
-            options={{ presentation: 'modal', title: 'Antes de continuar' }}
+            // Sin botón para salir en el encabezado: la pantalla previa tiene un único botón (RF-6).
+            options={{ presentation: 'modal', title: 'Antes de continuar', headerBackVisible: false }}
           />
         </Stack>
       </ThemeProvider>

@@ -61,6 +61,8 @@ src/
     │   ├── adaptadorNotificaciones.ts
     │   ├── adaptadorGaleria.ts       solo consulta (nunca pide)
     │   ├── registroAdaptadores.ts    mapa recurso → adaptador
+    │   ├── esRecursoSolicitable.ts   valida el parámetro [recurso] de la URL
+    │   ├── obtenerPasosAjustes.ts    camino en Ajustes según Platform.OS
     │   └── textosPermisos.ts         beneficio, pasos en Ajustes por plataforma
     ├── ubicacion/
     │   └── obtenerUbicacion.ts       receta E2(c)

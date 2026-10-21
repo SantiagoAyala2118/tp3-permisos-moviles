@@ -27,7 +27,7 @@
 | 3 | Lógica de permisos + hooks base | RF-1 | ✅ |
 | 4 | Limpieza de plantilla + layouts y rutas vacías | RT-5, G1 | ✅ (falta prueba manual) |
 | 5 | Reportes: contexto, Inicio, Nuevo y Detalle | RF-7, G1 | ✅ (falta prueba manual) |
-| 6 | Pantalla previa y "pedir en contexto" | RF-6, RF-8 | ⬜ |
+| 6 | Pantalla previa y "pedir en contexto" | RF-6, RF-8 | ✅ (falta prueba manual) |
 | 7 | Escáner QR | RF-2 | ⬜ |
 | 8 | Foto del desperfecto | RF-3 | ⬜ |
 | 9 | Ubicación | RF-4 | ⬜ |
@@ -162,12 +162,24 @@
 **Cubre:** RF-6, RF-8.
 **Archivos:** `src/components/PantallaPrevia.tsx`, `src/hooks/useNavegarConPermiso.ts`, `src/app/permisos/[recurso].tsx`, `src/app/reporte/nuevo.tsx` (botón Escanear).
 
-- [ ] `PantallaPrevia`: beneficio en una frase, **un único botón** ("Continuar" o "Abrir Ajustes"), aclaración "Podés cambiarlo en Ajustes". Sin "Ahora no" ni "Cerrar".
-- [ ] `/permisos/[recurso]`: validar recurso; preguntable → `pedir()` y volver/navegar al destino; bloqueado → pasos para habilitar + "Abrir Ajustes".
-- [ ] `useNavegarConPermiso`: concedido → va directo; si no → abre el modal. Solo desde `onPress`.
-- [ ] Conectar "Escanear QR del aula" en `/reporte/nuevo`.
+- [x] `PantallaPrevia`: beneficio en una frase, **un único botón** ("Continuar" o "Abrir Ajustes"), aclaración "Podés cambiarlo en Ajustes". Sin "Ahora no" ni "Cerrar".
+- [x] `/permisos/[recurso]`: validar recurso; preguntable → `pedir()` y volver/navegar al destino; bloqueado → pasos para habilitar + "Abrir Ajustes".
+- [x] `useNavegarConPermiso`: concedido → va directo; si no → abre el modal. Solo desde `onPress`.
+- [x] Conectar "Escanear QR del aula" en `/reporte/nuevo`.
 
 **Hecho cuando:** tocar Escanear sin permiso abre el modal; denegar y volver no reabre el modal solo; con bloqueo aparece "Abrir Ajustes".
+
+**Notas de cierre:**
+- `[recurso].tsx` tiene dos partes:
+  - La pantalla exportada valida `recurso` con `esRecursoSolicitable`: solo acepta cámara, ubicación y notificaciones, porque la galería nunca se pide. También valida que `destino` sea una ruta interna.
+  - Un componente interno usa `usePermiso`, así el hook nunca se llama de forma condicional.
+- Estados de la pantalla previa:
+  - **Preguntable:** "Continuar" → `pedir()` → cierra el modal y, si se concedió, navega al destino.
+  - **Bloqueado:** muestra el camino exacto en Ajustes según la plataforma (`obtenerPasosAjustes`, adelanto de OP-4) y el botón "Abrir Ajustes". Al volver de Ajustes se actualiza sola.
+  - **Concedido:** "¡Listo!" + "Continuar".
+- El modal oculta el botón atrás del encabezado (`headerBackVisible: false`): la pantalla no ofrece ninguna salida propia, solo el gesto o botón del sistema.
+- Se sumó `icono` a `textosPermisos`, y el título de la cámara pasó a "Usá la cámara para tu reporte" porque sirve para el QR y para la foto.
+- Lint y typecheck: 0 errores. El bundle de Android compila. Falta la prueba manual de los 3 casos del criterio.
 
 ---
 

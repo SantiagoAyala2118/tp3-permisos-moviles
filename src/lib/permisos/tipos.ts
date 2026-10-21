@@ -4,6 +4,9 @@ import type { IosAuthorizationStatus } from 'expo-notifications';
 /** Recursos del dispositivo que maneja la app. */
 export type Recurso = 'camara' | 'ubicacion' | 'notificaciones' | 'galeria';
 
+/** Recursos que la app SÍ pide (tienen pantalla previa). La galería nunca se pide. */
+export type RecursoSolicitable = Exclude<Recurso, 'galeria'>;
+
 /** Los cuatro estados con los que trabaja toda la app. */
 export type EstadoPermiso = 'cargando' | 'concedido' | 'preguntable' | 'bloqueado';
 
@@ -50,6 +53,8 @@ export type ResultadoPermiso = {
 /** Textos que se muestran al pedir o explicar un permiso. */
 export type TextosPermiso = {
   nombre: string;
+  /** Nombre del ícono de Ionicons que representa al recurso. */
+  icono: 'camera-outline' | 'location-outline' | 'notifications-outline' | 'images-outline';
   titulo: string;
   /** El beneficio, en una frase. */
   beneficio: string;

@@ -10,7 +10,8 @@ export const ACLARACION_AJUSTES = 'Podés cambiarlo cuando quieras en Ajustes.';
 const textosPermisos: Record<Recurso, TextosPermiso> = {
   camara: {
     nombre: 'Cámara',
-    titulo: 'Escaneá el QR del aula',
+    icono: 'camera-outline',
+    titulo: 'Usá la cámara para tu reporte',
     beneficio:
       'Usamos la cámara para leer el código QR de la puerta del aula y sacar la foto del desperfecto. Solo se activa mientras la usás.',
     pasosAjustes: {
@@ -20,6 +21,7 @@ const textosPermisos: Record<Recurso, TextosPermiso> = {
   },
   ubicacion: {
     nombre: 'Ubicación',
+    icono: 'location-outline',
     titulo: 'Marcá dónde está el problema',
     beneficio:
       'Usamos tu ubicación para marcar en qué lugar del instituto está el desperfecto. Solo mientras usás la app.',
@@ -30,6 +32,7 @@ const textosPermisos: Record<Recurso, TextosPermiso> = {
   },
   notificaciones: {
     nombre: 'Notificaciones',
+    icono: 'notifications-outline',
     titulo: 'Enterate cuando se resuelva',
     beneficio: 'Te avisamos con una notificación cuando se resuelva el desperfecto que reportaste.',
     pasosAjustes: {
@@ -39,6 +42,7 @@ const textosPermisos: Record<Recurso, TextosPermiso> = {
   },
   galeria: {
     nombre: 'Galería de fotos',
+    icono: 'images-outline',
     titulo: 'Tus fotos',
     beneficio:
       'No necesitamos permiso: para adjuntar una foto usamos el selector del sistema y solo recibimos la que elegís.',
