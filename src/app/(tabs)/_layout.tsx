@@ -46,6 +46,9 @@ export default function LayoutTabs() {
 
   return (
     <Tabs
+      // La barra flota y ya se separa del borde con `bottom`: sin este ajuste, react-navigation
+      // le suma por dentro el margen del sistema y los íconos quedan corridos hacia arriba.
+      safeAreaInsets={{ bottom: 0 }}
       screenOptions={{
         headerShadowVisible: false,
         headerTitleStyle: { color: tema.colores.texto, fontWeight: '700', fontSize: 20 },
@@ -54,6 +57,7 @@ export default function LayoutTabs() {
         tabBarShowLabel: false,
         tabBarStyle: [estilos.barra, { bottom: Math.max(margenes.bottom, tema.espaciado.m) }],
         tabBarItemStyle: estilos.itemBarra,
+        tabBarIconStyle: estilos.contenedorIcono,
       }}>
       <Tabs.Screen
         name="index"
@@ -109,8 +113,13 @@ const estilos = StyleSheet.create({
   },
   itemBarra: {
     height: 66,
+    paddingVertical: 0,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  contenedorIcono: {
+    width: 46,
+    height: 46,
   },
   circuloIcono: {
     width: 46,
