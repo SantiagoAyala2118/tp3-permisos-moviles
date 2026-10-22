@@ -308,7 +308,7 @@
 - [x] `npx expo lint`, `npx tsc --noEmit` y `npx expo-doctor` (21/21) sin errores.
 
 **Pruebas (Santiago, siguiendo `PRUEBAS.md`):**
-- [ ] Recorrido completo en Expo Go (todas las ramas de RF-1…RF-9; con todos los permisos denegados se crea un reporte → RF-7).
+- [x] Recorrido completo en Expo Go (todas las ramas de RF-1…RF-9; con todos los permisos denegados se crea un reporte → RF-7).
 - [ ] `npx eas-cli@latest login`, `npx eas-cli@latest init` y `npx eas-cli@latest build --profile development --platform android`. Después, instalar el APK.
 - [ ] Repetir las pruebas clave en la development build y verificar que en Ajustes solo aparezcan Cámara, Ubicación y Notificaciones.
 - [ ] Reset de permisos entre pruebas: reinstalar, o `adb` si se instalan las Platform-Tools.
@@ -330,6 +330,35 @@
     | `expo-image` | ACCESS_NETWORK_STATE, INTERNET y READ_EXTERNAL_STORAGE (bloqueado) |
     | `expo-image-picker` | CAMERA, READ_EXTERNAL_STORAGE y WRITE_EXTERNAL_STORAGE (ambos bloqueados) |
     | `expo-file-system` | INTERNET, READ_EXTERNAL_STORAGE y WRITE_EXTERNAL_STORAGE (ambos bloqueados) |
+
+**Correcciones surgidas de las pruebas en Expo Go:**
+- Expo Go del Play Store solo soporta el último SDK (58). Para SDK 57 se instala el APK oficial `Expo-Go-57.0.9`, y el servidor se arranca con `npx expo start --go`. Con `expo-dev-client` instalado, el QR a secas apunta a la development build.
+- `import * as Notifications from 'expo-notifications'` rompía la app en Expo Go Android, porque el índice carga el módulo nativo `ExpoTopicSubscriptionModule`, que Expo Go no tiene. Se creó la fachada `src/lib/notificaciones/moduloNotificaciones.ts`, que importa solo las partes locales.
+- `setNotificationChannelAsync` falla en el código nativo de Expo Go (`NotificationsChannelsProvider` nulo). En Expo Go el canal no se crea (`isRunningInExpoGo()`) y la notificación se programa sin `channelId`. En la development build el canal sí se crea.
+- En la web, el escáner no usa la cámara: lee QR con un WASM de un CDN externo que la red bloqueaba. En la web se escribe el código a mano.
+- La pantalla previa ahora siempre continúa al `destino` (también si se deniega), así el escáner muestra sus estados "preguntable" y "bloqueado" con la alternativa manual.
+- `npx expo install --fix`: `expo`, `expo-router`, `expo-location` y `@expo/ui` quedaron en la versión exacta de SDK 57.
+- En Expo Go, los permisos pertenecen a la app **Expo Go**: se cambian en Ajustes → Apps → Expo Go.
+
+---
+
+## Estilos (entre TASK 12 y TASK 13)
+
+Pedido de Santiago antes de sacar las capturas: aplicar la paleta verde (#09110D, #0B3221, #135E3D, #1AA06D) y un diseño inspirado en su referencia (tarjetas muy redondeadas, botones píldora, barra de tabs flotante).
+
+- [x] `src/lib/tema.ts`: tema oscuro con esos 4 colores, degradados, radios grandes y fuente monoespaciada según la plataforma. `app.json` pasó a `userInterfaceStyle: "dark"` y el splash y las notificaciones toman los colores de la paleta.
+- [x] Dependencia nueva `expo-linear-gradient` (instalada con `npx expo install`; viene incluida en Expo Go).
+- [x] Componentes nuevos:
+  - `Tarjeta`: superficie con degradado.
+  - `TarjetaResumen`: tarjeta principal de Inicio, con el conteo por estado.
+- [x] Función nueva `lib/reportes/contarPorEstado`.
+- [x] Cambios en los componentes existentes:
+  - Botones píldora con ícono.
+  - Chips con punto de color.
+  - Campos con etiqueta en mayúsculas.
+  - Barra de tabs flotante con íconos en círculos.
+- [x] Todas las pantallas reorganizadas en tarjetas: Inicio, Nuevo, Detalle, Foto, Ubicación, Ajustes, Avisos, Permisos, la pantalla previa y el escáner.
+- [x] Verificación: lint y typecheck sin errores, `expo export` web (15 rutas renderizadas) y bundle de Android sin errores. Revisión visual en el navegador en tamaño de celular.
 
 ---
 
