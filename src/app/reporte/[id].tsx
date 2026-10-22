@@ -1,12 +1,13 @@
 import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import BotonPrincipal from '@/components/BotonPrincipal';
 import ContenedorPantalla from '@/components/ContenedorPantalla';
 import EtiquetaEstado from '@/components/EtiquetaEstado';
 import FilaDato from '@/components/FilaDato';
+import Tarjeta from '@/components/Tarjeta';
 import useAvisarResolucion from '@/hooks/useAvisarResolucion';
 import useReportes from '@/hooks/useReportes';
 import describirLugar from '@/lib/reportes/describirLugar';
@@ -49,44 +50,78 @@ export default function PantallaDetalleReporte() {
 
   return (
     <ContenedorPantalla>
-      <Text style={estilos.titulo}>{reporte.titulo}</Text>
-      <EtiquetaEstado estado={reporte.estado} />
+      <Tarjeta variante="destacado" estilo={estilos.heroe}>
+        {reporte.fotoUri ? (
+          <Image source={{ uri: reporte.fotoUri }} style={estilos.foto} contentFit="cover" />
+        ) : null}
+        <Text style={estilos.titulo}>{reporte.titulo}</Text>
+        <EtiquetaEstado estado={reporte.estado} />
+        <Text style={estilos.texto}>{reporte.descripcion || 'Sin descripción'}</Text>
+      </Tarjeta>
 
-      <FilaDato etiqueta="Categoría" valor={etiquetasReportes.categorias[reporte.categoria]} />
-      <FilaDato etiqueta="Aula" valor={reporte.aula} />
-      <FilaDato etiqueta="Descripción" valor={reporte.descripcion || 'Sin descripción'} />
-      <FilaDato etiqueta="Lugar" valor={describirLugar(reporte)} />
-      <FilaDato
-        etiqueta="Fecha"
-        valor={new Date(reporte.fechaCreacion).toLocaleDateString('es-AR')}
-      />
-
-      {reporte.fotoUri ? (
-        <Image source={{ uri: reporte.fotoUri }} style={estilos.foto} contentFit="cover" />
-      ) : (
-        <FilaDato etiqueta="Foto" valor="Sin foto" />
-      )}
+      <Tarjeta estilo={estilos.datos}>
+        <View style={estilos.filaDoble}>
+          <View style={estilos.mitad}>
+            <FilaDato etiqueta="Categoría" valor={etiquetasReportes.categorias[reporte.categoria]} />
+          </View>
+          <View style={estilos.mitad}>
+            <FilaDato etiqueta="Aula" valor={reporte.aula} />
+          </View>
+        </View>
+        <View style={estilos.filaDoble}>
+          <View style={estilos.mitad}>
+            <FilaDato etiqueta="Lugar" valor={describirLugar(reporte)} />
+          </View>
+          <View style={estilos.mitad}>
+            <FilaDato
+              etiqueta="Fecha"
+              valor={new Date(reporte.fechaCreacion).toLocaleDateString('es-AR')}
+            />
+          </View>
+        </View>
+        {reporte.fotoUri ? null : <FilaDato etiqueta="Foto" valor="Sin foto" />}
+      </Tarjeta>
 
       <BotonPrincipal
         titulo={estaResuelto ? 'Reporte resuelto' : 'Simular resolución'}
-        variante="secundario"
+        icono={estaResuelto ? 'checkmark-done' : 'sparkles-outline'}
         deshabilitado={estaResuelto}
         alPresionar={simularResolucion}
       />
-      {mensajeAviso ? <Text style={estilos.texto}>{mensajeAviso}</Text> : null}
+      {mensajeAviso ? <Text style={estilos.aviso}>{mensajeAviso}</Text> : null}
     </ContenedorPantalla>
   );
 }
 
 const estilos = StyleSheet.create({
+  heroe: {
+    gap: tema.espaciado.m,
+    padding: tema.espaciado.l,
+  },
   titulo: {
-    fontSize: tema.texto.titulo,
-    fontWeight: '700',
+    fontSize: tema.texto.titulo + 4,
+    fontWeight: '800',
     color: tema.colores.texto,
   },
   texto: {
     fontSize: tema.texto.cuerpo,
+    lineHeight: 22,
     color: tema.colores.textoSuave,
+  },
+  aviso: {
+    fontSize: tema.texto.cuerpo,
+    textAlign: 'center',
+    color: tema.colores.exito,
+  },
+  datos: {
+    gap: tema.espaciado.m,
+  },
+  filaDoble: {
+    flexDirection: 'row',
+    gap: tema.espaciado.m,
+  },
+  mitad: {
+    flex: 1,
   },
   foto: {
     width: '100%',

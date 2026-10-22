@@ -4,6 +4,8 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { Aviso } from '@/lib/reportes/tipos';
 import tema from '@/lib/tema';
 
+import Tarjeta from './Tarjeta';
+
 type Props = {
   aviso: Aviso;
   alPresionar: () => void;
@@ -16,13 +18,17 @@ export default function TarjetaAviso({ aviso, alPresionar }: Props) {
       accessibilityRole="button"
       accessibilityHint="Abre el reporte del aviso"
       onPress={alPresionar}
-      style={({ pressed }) => [estilos.tarjeta, pressed && estilos.presionada]}>
-      <Ionicons name="checkmark-circle-outline" size={28} color={tema.colores.exito} />
-      <View style={estilos.textos}>
-        <Text style={estilos.titulo}>{aviso.titulo}</Text>
-        <Text style={estilos.mensaje}>{aviso.mensaje}</Text>
-        <Text style={estilos.fecha}>{new Date(aviso.fecha).toLocaleString('es-AR')}</Text>
-      </View>
+      style={({ pressed }) => pressed && estilos.presionada}>
+      <Tarjeta estilo={estilos.tarjeta}>
+        <View style={estilos.icono}>
+          <Ionicons name="checkmark-done" size={22} color={tema.colores.sobrePrimario} />
+        </View>
+        <View style={estilos.textos}>
+          <Text style={estilos.titulo}>{aviso.titulo}</Text>
+          <Text style={estilos.mensaje}>{aviso.mensaje}</Text>
+          <Text style={estilos.fecha}>{new Date(aviso.fecha).toLocaleString('es-AR')}</Text>
+        </View>
+      </Tarjeta>
     </Pressable>
   );
 }
@@ -30,15 +36,19 @@ export default function TarjetaAviso({ aviso, alPresionar }: Props) {
 const estilos = StyleSheet.create({
   tarjeta: {
     flexDirection: 'row',
+    alignItems: 'flex-start',
     gap: tema.espaciado.m,
-    padding: tema.espaciado.m,
-    borderRadius: tema.radio.m,
-    borderWidth: 1,
-    borderColor: tema.colores.borde,
-    backgroundColor: tema.colores.superficie,
   },
   presionada: {
-    opacity: 0.7,
+    opacity: 0.75,
+  },
+  icono: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: tema.colores.exito,
   },
   textos: {
     flex: 1,
@@ -46,7 +56,7 @@ const estilos = StyleSheet.create({
   },
   titulo: {
     fontSize: tema.texto.cuerpo,
-    fontWeight: '600',
+    fontWeight: '700',
     color: tema.colores.texto,
   },
   mensaje: {

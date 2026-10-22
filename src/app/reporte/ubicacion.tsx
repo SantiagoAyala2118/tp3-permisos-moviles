@@ -1,11 +1,12 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
 import BotonPrincipal from '@/components/BotonPrincipal';
 import ContenedorPantalla from '@/components/ContenedorPantalla';
-import FilaDato from '@/components/FilaDato';
 import SelectorOpciones from '@/components/SelectorOpciones';
+import Tarjeta from '@/components/Tarjeta';
 import useNavegarConPermiso from '@/hooks/useNavegarConPermiso';
 import useReportes from '@/hooks/useReportes';
 import describirLugar from '@/lib/reportes/describirLugar';
@@ -45,50 +46,99 @@ export default function PantallaUbicacion() {
 
   return (
     <ContenedorPantalla>
-      <FilaDato etiqueta="Lugar marcado" valor={describirLugar(borrador)} />
-
-      {borrador.ubicacion?.aproximada ? (
-        <Text style={estilos.nota}>
-          Compartiste tu ubicación aproximada: guardamos la zona, sin coordenadas exactas.
-        </Text>
-      ) : null}
-
-      <BotonPrincipal
-        titulo="Usar mi ubicación actual"
-        deshabilitado={buscando}
-        alPresionar={usarUbicacionActual}
-      />
-      {buscando ? (
-        <View style={estilos.buscando}>
-          <ActivityIndicator color={tema.colores.primario} />
-          <Text style={estilos.nota}>Buscando tu ubicación…</Text>
+      <Tarjeta variante="destacado" estilo={estilos.heroe}>
+        <View style={estilos.icono}>
+          <Ionicons name="location" size={32} color={tema.colores.sobrePrimario} />
         </View>
-      ) : null}
+        <Text style={estilos.etiqueta}>Lugar marcado</Text>
+        <Text style={estilos.lugar}>{describirLugar(borrador)}</Text>
+
+        {borrador.ubicacion?.aproximada ? (
+          <Text style={estilos.nota}>
+            Compartiste tu ubicación aproximada: guardamos la zona, sin coordenadas exactas.
+          </Text>
+        ) : null}
+
+        <View style={estilos.boton}>
+          <BotonPrincipal
+            titulo="Usar mi ubicación actual"
+            icono="navigate-outline"
+            deshabilitado={buscando}
+            alPresionar={usarUbicacionActual}
+          />
+        </View>
+        {buscando ? (
+          <View style={estilos.buscando}>
+            <ActivityIndicator color={tema.colores.primario} />
+            <Text style={estilos.nota}>Buscando tu ubicación…</Text>
+          </View>
+        ) : null}
+      </Tarjeta>
 
       {ubicacionDenegada ? (
         <Text style={estilos.aviso}>Sin ubicación: elegí el sector a mano. El reporte se guarda igual.</Text>
       ) : null}
       {aviso ? <Text style={estilos.aviso}>{aviso}</Text> : null}
 
-      <SelectorOpciones
-        etiqueta="O elegí el sector a mano"
-        opciones={etiquetasReportes.sectores}
-        seleccionada={borrador.sector}
-        alElegir={(sector) => actualizarBorrador({ sector, ubicacion: null })}
-      />
+      <Tarjeta>
+        <SelectorOpciones
+          etiqueta="O elegí el sector a mano"
+          opciones={etiquetasReportes.sectores}
+          seleccionada={borrador.sector}
+          alElegir={(sector) => actualizarBorrador({ sector, ubicacion: null })}
+        />
+      </Tarjeta>
 
-      <BotonPrincipal titulo="Listo" variante="secundario" alPresionar={() => router.back()} />
+      <BotonPrincipal
+        titulo="Listo"
+        icono="checkmark"
+        variante="secundario"
+        alPresionar={() => router.back()}
+      />
     </ContenedorPantalla>
   );
 }
 
 const estilos = StyleSheet.create({
+  heroe: {
+    alignItems: 'center',
+    gap: tema.espaciado.s,
+    paddingVertical: tema.espaciado.l,
+  },
+  icono: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: tema.colores.primario,
+    marginBottom: tema.espaciado.s,
+  },
+  etiqueta: {
+    fontSize: tema.texto.chico,
+    fontWeight: '700',
+    letterSpacing: 0.4,
+    textTransform: 'uppercase',
+    color: tema.colores.textoSuave,
+  },
+  lugar: {
+    fontSize: tema.texto.titulo,
+    fontWeight: '800',
+    textAlign: 'center',
+    color: tema.colores.texto,
+  },
+  boton: {
+    alignSelf: 'stretch',
+    marginTop: tema.espaciado.s,
+  },
   nota: {
     fontSize: tema.texto.chico,
+    textAlign: 'center',
     color: tema.colores.textoSuave,
   },
   aviso: {
     fontSize: tema.texto.cuerpo,
+    textAlign: 'center',
     color: tema.colores.alerta,
   },
   buscando: {

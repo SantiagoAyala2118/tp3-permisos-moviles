@@ -124,7 +124,10 @@ const estilos = StyleSheet.create({
   },
   panel: {
     gap: tema.espaciado.m,
-    padding: tema.espaciado.m,
+    padding: tema.espaciado.l,
+    marginTop: -tema.radio.l,
+    borderTopLeftRadius: tema.radio.l,
+    borderTopRightRadius: tema.radio.l,
     backgroundColor: tema.colores.superficie,
     borderTopWidth: 1,
     borderTopColor: tema.colores.borde,

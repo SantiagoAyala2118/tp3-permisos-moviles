@@ -23,7 +23,7 @@ const NOTAS: Partial<Record<Recurso, string>> = {
  */
 export default function PantallaPermisos() {
   return (
-    <ContenedorPantalla>
+    <ContenedorPantalla conBarraTabs>
       <Text style={estilos.texto}>
         Así está cada permiso en este dispositivo. Si cambiás algo en Ajustes, al volver se
         actualiza solo.

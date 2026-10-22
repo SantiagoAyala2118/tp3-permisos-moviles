@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "tp3permisosmoviles",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "ios": {
       "icon": "./assets/expo.icon",
       "bundleIdentifier": "com.santiagoayala.mantenimientoipf"
@@ -40,7 +40,7 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#09110D",
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
         }
@@ -75,7 +75,7 @@
       [
         "expo-notifications",
         {
-          "color": "#208AEF"
+          "color": "#1AA06D"
         }
       ]
     ],

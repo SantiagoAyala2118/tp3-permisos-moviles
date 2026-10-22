@@ -19,11 +19,13 @@ export default function FilaDato({ etiqueta, valor }: Props) {
 
 const estilos = StyleSheet.create({
   fila: {
-    gap: 2,
+    gap: 4,
   },
   etiqueta: {
     fontSize: tema.texto.chico,
-    fontWeight: '600',
+    fontWeight: '700',
+    letterSpacing: 0.4,
+    textTransform: 'uppercase',
     color: tema.colores.textoSuave,
   },
   valor: {

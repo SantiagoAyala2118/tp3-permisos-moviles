@@ -5,6 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import tema from '@/lib/tema';
 
 import BotonPrincipal from './BotonPrincipal';
+import Tarjeta from './Tarjeta';
 
 type Props = {
   icono: ComponentProps<typeof Ionicons>['name'];
@@ -38,19 +39,25 @@ export default function PantallaPrevia({
 }: Props) {
   return (
     <View style={estilos.contenedor}>
-      <View style={estilos.circuloIcono}>
-        <Ionicons name={icono} size={40} color={tema.colores.primario} />
-      </View>
-      <Text style={estilos.titulo} accessibilityRole="header">
-        {titulo}
-      </Text>
-      <Text style={estilos.mensaje}>{mensaje}</Text>
-      {pasosAjustes ? <Text style={estilos.pasos}>{pasosAjustes}</Text> : null}
+      <Tarjeta variante="destacado" estilo={estilos.heroe}>
+        <View style={estilos.anillo}>
+          <View style={estilos.circuloIcono}>
+            <Ionicons name={icono} size={40} color={tema.colores.sobrePrimario} />
+          </View>
+        </View>
+        <Text style={estilos.titulo} accessibilityRole="header">
+          {titulo}
+        </Text>
+        <Text style={estilos.mensaje}>{mensaje}</Text>
+        {pasosAjustes ? <Text style={estilos.pasos}>{pasosAjustes}</Text> : null}
 
-      <BotonPrincipal titulo={textoBoton} alPresionar={alPresionar} />
-      {aclaracion ? <Text style={estilos.aclaracion}>{aclaracion}</Text> : null}
+        <View style={estilos.boton}>
+          <BotonPrincipal titulo={textoBoton} alPresionar={alPresionar} />
+        </View>
+        {aclaracion ? <Text style={estilos.aclaracion}>{aclaracion}</Text> : null}
+      </Tarjeta>
 
-      {children ? <View style={estilos.alternativa}>{children}</View> : null}
+      {children ? <Tarjeta estilo={estilos.alternativa}>{children}</Tarjeta> : null}
     </View>
   );
 }
@@ -58,36 +65,53 @@ export default function PantallaPrevia({
 const estilos = StyleSheet.create({
   contenedor: {
     gap: tema.espaciado.m,
-    paddingVertical: tema.espaciado.l,
+    paddingVertical: tema.espaciado.s,
+  },
+  heroe: {
+    alignItems: 'center',
+    gap: tema.espaciado.m,
+    paddingVertical: tema.espaciado.xl,
+    paddingHorizontal: tema.espaciado.l,
+  },
+  anillo: {
+    padding: 6,
+    borderRadius: 60,
+    borderWidth: 2,
+    borderColor: tema.colores.primario,
   },
   circuloIcono: {
-    alignSelf: 'center',
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    width: 88,
+    height: 88,
+    borderRadius: 44,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: tema.colores.primarioSuave,
+    backgroundColor: tema.colores.primario,
   },
   titulo: {
-    fontSize: tema.texto.titulo,
-    fontWeight: '700',
+    fontSize: tema.texto.titulo + 2,
+    fontWeight: '800',
     textAlign: 'center',
     color: tema.colores.texto,
   },
   mensaje: {
     fontSize: tema.texto.cuerpo,
+    lineHeight: 22,
     textAlign: 'center',
-    color: tema.colores.texto,
+    color: tema.colores.textoSuave,
   },
   pasos: {
+    alignSelf: 'stretch',
     fontSize: tema.texto.cuerpo,
+    lineHeight: 22,
     padding: tema.espaciado.m,
     borderRadius: tema.radio.m,
-    backgroundColor: tema.colores.superficie,
+    backgroundColor: tema.colores.fondo,
     borderWidth: 1,
     borderColor: tema.colores.borde,
     color: tema.colores.texto,
+  },
+  boton: {
+    alignSelf: 'stretch',
   },
   aclaracion: {
     fontSize: tema.texto.chico,
@@ -96,8 +120,5 @@ const estilos = StyleSheet.create({
   },
   alternativa: {
     gap: tema.espaciado.s,
-    paddingTop: tema.espaciado.m,
-    borderTopWidth: 1,
-    borderTopColor: tema.colores.borde,
   },
 });

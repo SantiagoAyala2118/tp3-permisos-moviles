@@ -2,18 +2,27 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Link } from 'expo-router';
 import { Tabs } from 'expo-router/js-tabs';
 import type { ComponentProps } from 'react';
-import { Pressable, type ColorValue } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import tema from '@/lib/tema';
 
 type PropsIconoTab = {
   nombre: ComponentProps<typeof Ionicons>['name'];
-  color: ColorValue;
-  size: number;
+  enfocado: boolean;
 };
 
-function IconoTab({ nombre, color, size }: PropsIconoTab) {
-  return <Ionicons name={nombre} color={color} size={size} />;
+/** Ícono de la barra flotante: un círculo que se "enciende" en esmeralda cuando está activo. */
+function IconoTab({ nombre, enfocado }: PropsIconoTab) {
+  return (
+    <View style={[estilos.circuloIcono, enfocado && estilos.circuloActivo]}>
+      <Ionicons
+        name={nombre}
+        size={22}
+        color={enfocado ? tema.colores.sobrePrimario : tema.colores.textoSuave}
+      />
+    </View>
+  );
 }
 
 /** Acceso a /ajustes-app desde el encabezado de "Reportes". */
@@ -24,27 +33,34 @@ function BotonAjustesApp() {
         accessibilityRole="button"
         accessibilityLabel="Ajustes de la app"
         hitSlop={tema.espaciado.s}
-        style={{ paddingHorizontal: tema.espaciado.m }}>
-        <Ionicons name="settings-outline" size={22} color={tema.colores.primario} />
+        style={estilos.botonAjustes}>
+        <Ionicons name="settings-outline" size={20} color={tema.colores.texto} />
       </Pressable>
     </Link>
   );
 }
 
-/** Tabs: "Reportes" (/), "Avisos" (/avisos) y "Permisos" (/permisos). */
+/** Tabs: "Reportes" (/), "Avisos" (/avisos) y "Permisos" (/permisos), en una barra flotante. */
 export default function LayoutTabs() {
+  const margenes = useSafeAreaInsets();
+
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: tema.colores.primario,
-        tabBarInactiveTintColor: tema.colores.textoSuave,
-        headerTitleStyle: { color: tema.colores.texto },
+        headerShadowVisible: false,
+        headerTitleStyle: { color: tema.colores.texto, fontWeight: '700', fontSize: 20 },
+        headerStyle: { backgroundColor: tema.colores.fondo },
+        sceneStyle: { backgroundColor: tema.colores.fondo },
+        tabBarShowLabel: false,
+        tabBarStyle: [estilos.barra, { bottom: Math.max(margenes.bottom, tema.espaciado.m) }],
+        tabBarItemStyle: estilos.itemBarra,
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Reportes',
-          tabBarIcon: (props) => <IconoTab nombre="construct-outline" {...props} />,
+          tabBarAccessibilityLabel: 'Reportes',
+          tabBarIcon: ({ focused }) => <IconoTab nombre="construct-outline" enfocado={focused} />,
           headerRight: () => <BotonAjustesApp />,
         }}
       />
@@ -52,16 +68,70 @@ export default function LayoutTabs() {
         name="avisos"
         options={{
           title: 'Avisos',
-          tabBarIcon: (props) => <IconoTab nombre="notifications-outline" {...props} />,
+          tabBarAccessibilityLabel: 'Avisos',
+          tabBarIcon: ({ focused }) => (
+            <IconoTab nombre="notifications-outline" enfocado={focused} />
+          ),
         }}
       />
       <Tabs.Screen
         name="permisos"
         options={{
           title: 'Permisos',
-          tabBarIcon: (props) => <IconoTab nombre="shield-checkmark-outline" {...props} />,
+          tabBarAccessibilityLabel: 'Permisos',
+          tabBarIcon: ({ focused }) => (
+            <IconoTab nombre="shield-checkmark-outline" enfocado={focused} />
+          ),
         }}
       />
     </Tabs>
   );
 }
+
+const estilos = StyleSheet.create({
+  barra: {
+    position: 'absolute',
+    marginHorizontal: tema.espaciado.xl * 2,
+    height: 68,
+    paddingTop: 0,
+    paddingBottom: 0,
+    borderRadius: tema.radio.pildora,
+    borderTopWidth: 1,
+    borderWidth: 1,
+    borderColor: tema.colores.borde,
+    borderTopColor: tema.colores.borde,
+    backgroundColor: tema.colores.superficie,
+    shadowColor: tema.colores.sombra,
+    shadowOpacity: 0.4,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 12,
+  },
+  itemBarra: {
+    height: 66,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  circuloIcono: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: tema.colores.superficieElevada,
+  },
+  circuloActivo: {
+    backgroundColor: tema.colores.primario,
+  },
+  botonAjustes: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: tema.espaciado.m,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: tema.colores.superficie,
+    borderWidth: 1,
+    borderColor: tema.colores.borde,
+  },
+});

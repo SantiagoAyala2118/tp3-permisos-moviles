@@ -1,3 +1,4 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useState } from 'react';
@@ -55,12 +56,18 @@ export default function PantallaFoto() {
         />
       ) : (
         <View style={estilos.sinFoto}>
+          <Ionicons name="image-outline" size={40} color={tema.colores.primario} />
           <Text style={estilos.textoSuave}>Todavía no adjuntaste ninguna foto.</Text>
         </View>
       )}
 
-      <BotonPrincipal titulo="Sacar foto" alPresionar={sacarFoto} />
-      <BotonPrincipal titulo="Elegir de la galería" variante="secundario" alPresionar={elegirDeGaleria} />
+      <BotonPrincipal titulo="Sacar foto" icono="camera-outline" alPresionar={sacarFoto} />
+      <BotonPrincipal
+        titulo="Elegir de la galería"
+        icono="images-outline"
+        variante="secundario"
+        alPresionar={elegirDeGaleria}
+      />
 
       <Text style={estilos.textoSuave}>
         Para elegir una foto no hace falta ningún permiso: usamos el selector del sistema y solo
@@ -76,7 +83,7 @@ export default function PantallaFoto() {
 
       {borrador.fotoUri ? (
         <View style={estilos.acciones}>
-          <BotonPrincipal titulo="Listo" alPresionar={() => router.back()} />
+          <BotonPrincipal titulo="Listo" icono="checkmark" alPresionar={() => router.back()} />
           <BotonPrincipal
             titulo="Quitar foto"
             variante="secundario"
@@ -91,20 +98,24 @@ export default function PantallaFoto() {
 const estilos = StyleSheet.create({
   foto: {
     width: '100%',
-    height: 260,
-    borderRadius: tema.radio.m,
+    height: 280,
+    borderRadius: tema.radio.l,
   },
   sinFoto: {
-    height: 160,
+    height: 200,
+    gap: tema.espaciado.s,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: tema.radio.m,
-    borderWidth: 1,
+    borderRadius: tema.radio.l,
+    borderWidth: 1.5,
     borderStyle: 'dashed',
-    borderColor: tema.colores.borde,
+    borderColor: tema.colores.primario,
+    backgroundColor: tema.colores.superficie,
   },
   textoSuave: {
     fontSize: tema.texto.chico,
+    lineHeight: 19,
+    textAlign: 'center',
     color: tema.colores.textoSuave,
   },
   aviso: {

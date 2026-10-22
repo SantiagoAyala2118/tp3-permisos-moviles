@@ -1,4 +1,4 @@
-import { DefaultTheme, Stack, ThemeProvider } from 'expo-router';
+import { DarkTheme, Stack, ThemeProvider } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
 import configurarManejadorNotificaciones from '@/lib/notificaciones/configurarManejadorNotificaciones';
@@ -9,14 +9,15 @@ import tema from '@/lib/tema';
 configurarManejadorNotificaciones();
 
 const temaNavegacion = {
-  ...DefaultTheme,
+  ...DarkTheme,
   colors: {
-    ...DefaultTheme.colors,
+    ...DarkTheme.colors,
     primary: tema.colores.primario,
     background: tema.colores.fondo,
-    card: tema.colores.superficie,
+    card: tema.colores.fondo,
     text: tema.colores.texto,
     border: tema.colores.borde,
+    notification: tema.colores.primario,
   },
 };
 
@@ -28,8 +29,16 @@ export default function LayoutRaiz() {
   return (
     <ReportesProveedor>
       <ThemeProvider value={temaNavegacion}>
-        <StatusBar style="dark" />
-        <Stack screenOptions={{ headerBackButtonDisplayMode: 'minimal' }}>
+        <StatusBar style="light" />
+        <Stack
+          screenOptions={{
+            headerBackButtonDisplayMode: 'minimal',
+            headerShadowVisible: false,
+            headerTintColor: tema.colores.texto,
+            headerTitleStyle: { fontWeight: '700' },
+            headerStyle: { backgroundColor: tema.colores.fondo },
+            contentStyle: { backgroundColor: tema.colores.fondo },
+          }}>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="reporte/nuevo" options={{ title: 'Nuevo reporte' }} />
           <Stack.Screen name="reporte/escanear" options={{ title: 'Escanear QR del aula' }} />
@@ -40,7 +49,13 @@ export default function LayoutRaiz() {
           <Stack.Screen
             name="permisos/[recurso]"
             // Sin botón para salir en el encabezado: la pantalla previa tiene un único botón (RF-6).
-            options={{ presentation: 'modal', title: 'Antes de continuar', headerBackVisible: false }}
+            options={{
+              presentation: 'modal',
+              title: 'Antes de continuar',
+              headerBackVisible: false,
+              headerStyle: { backgroundColor: tema.colores.superficie },
+              contentStyle: { backgroundColor: tema.colores.superficie },
+            }}
           />
         </Stack>
       </ThemeProvider>

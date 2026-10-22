@@ -45,11 +45,13 @@ export default function SelectorOpciones<T extends string>({
 
 const estilos = StyleSheet.create({
   contenedor: {
-    gap: tema.espaciado.xs,
+    gap: tema.espaciado.s,
   },
   etiqueta: {
     fontSize: tema.texto.chico,
-    fontWeight: '600',
+    fontWeight: '700',
+    letterSpacing: 0.4,
+    textTransform: 'uppercase',
     color: tema.colores.textoSuave,
   },
   chips: {
@@ -58,24 +60,24 @@ const estilos = StyleSheet.create({
     gap: tema.espaciado.s,
   },
   chip: {
-    minHeight: 40,
+    minHeight: 42,
     justifyContent: 'center',
     paddingHorizontal: tema.espaciado.m,
-    borderRadius: 999,
+    borderRadius: tema.radio.pildora,
     borderWidth: 1,
     borderColor: tema.colores.borde,
     backgroundColor: tema.colores.superficie,
   },
   chipActivo: {
     borderColor: tema.colores.primario,
-    backgroundColor: tema.colores.primarioSuave,
+    backgroundColor: tema.colores.primario,
   },
   textoChip: {
     fontSize: tema.texto.cuerpo,
     color: tema.colores.texto,
   },
   textoChipActivo: {
-    color: tema.colores.primario,
-    fontWeight: '600',
+    color: tema.colores.sobrePrimario,
+    fontWeight: '700',
   },
 });

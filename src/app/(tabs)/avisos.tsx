@@ -1,7 +1,9 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import ContenedorPantalla from '@/components/ContenedorPantalla';
+import Tarjeta from '@/components/Tarjeta';
 import TarjetaAviso from '@/components/TarjetaAviso';
 import useReportes from '@/hooks/useReportes';
 import tema from '@/lib/tema';
@@ -15,18 +17,23 @@ export default function PantallaAvisos() {
 
   if (avisos.length === 0) {
     return (
-      <ContenedorPantalla>
-        <Text style={estilos.titulo}>No tenés avisos</Text>
-        <Text style={estilos.texto}>
-          Cuando se resuelva un reporte y no tengas las notificaciones activadas, el aviso va a
-          aparecer acá.
-        </Text>
+      <ContenedorPantalla conBarraTabs>
+        <Tarjeta variante="destacado" estilo={estilos.vacio}>
+          <View style={estilos.icono}>
+            <Ionicons name="notifications-outline" size={36} color={tema.colores.sobrePrimario} />
+          </View>
+          <Text style={estilos.titulo}>No tenés avisos</Text>
+          <Text style={estilos.texto}>
+            Cuando se resuelva un reporte y no tengas las notificaciones activadas, el aviso va a
+            aparecer acá.
+          </Text>
+        </Tarjeta>
       </ContenedorPantalla>
     );
   }
 
   return (
-    <ContenedorPantalla>
+    <ContenedorPantalla conBarraTabs>
       {avisos.map((aviso) => (
         <TarjetaAviso
           key={aviso.id}
@@ -41,6 +48,19 @@ export default function PantallaAvisos() {
 }
 
 const estilos = StyleSheet.create({
+  vacio: {
+    alignItems: 'center',
+    gap: tema.espaciado.m,
+    paddingVertical: tema.espaciado.xl,
+  },
+  icono: {
+    width: 76,
+    height: 76,
+    borderRadius: 38,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: tema.colores.primario,
+  },
   titulo: {
     fontSize: tema.texto.titulo,
     fontWeight: '700',
@@ -48,6 +68,8 @@ const estilos = StyleSheet.create({
   },
   texto: {
     fontSize: tema.texto.cuerpo,
+    lineHeight: 22,
+    textAlign: 'center',
     color: tema.colores.textoSuave,
   },
 });

@@ -34,7 +34,9 @@ src/
 │   │   └── [id].tsx                  →  /reporte/[id]
 │   └── ajustes-app.tsx               →  /ajustes-app
 ├── components/                       ← piezas visuales reutilizables (sin lógica de permisos)
-│   ├── BotonPrincipal.tsx
+│   ├── BotonPrincipal.tsx            píldora (degradado o contorno) con ícono opcional
+│   ├── Tarjeta.tsx                   superficie base con degradado y bordes redondeados
+│   ├── TarjetaResumen.tsx            tarjeta principal de Inicio (conteo por estado)
 │   ├── ContenedorPantalla.tsx        fondo, márgenes y scroll comunes
 │   ├── CampoTexto.tsx
 │   ├── VistaCargando.tsx
@@ -53,7 +55,7 @@ src/
 │   ├── useReportes.ts                acceso al contexto de reportes
 │   └── useAvisarResolucion.ts        notificación (10 s) o bandeja /avisos
 └── lib/
-    ├── tema.ts                       colores y espaciados
+    ├── tema.ts                       paleta verde oscura, degradados, radios y tipografía
     ├── permisos/
     │   ├── tipos.ts                  Recurso, EstadoPermiso, RespuestaPermiso, AdaptadorPermiso
     │   ├── clasificarRespuesta.ts    respuesta → 'cargando' | 'concedido' | 'preguntable' | 'bloqueado'

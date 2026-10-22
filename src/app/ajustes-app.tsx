@@ -1,6 +1,8 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { StyleSheet, Switch, Text, View } from 'react-native';
 
 import ContenedorPantalla from '@/components/ContenedorPantalla';
+import Tarjeta from '@/components/Tarjeta';
 import useNavegarConPermiso from '@/hooks/useNavegarConPermiso';
 import useReportes from '@/hooks/useReportes';
 import tema from '@/lib/tema';
@@ -25,7 +27,10 @@ export default function PantallaAjustesApp() {
 
   return (
     <ContenedorPantalla>
-      <View style={estilos.fila}>
+      <Tarjeta variante="destacado" estilo={estilos.fila}>
+        <View style={estilos.icono}>
+          <Ionicons name="notifications" size={22} color={tema.colores.sobrePrimario} />
+        </View>
         <View style={estilos.textos}>
           <Text style={estilos.titulo}>Avisarme cuando se resuelva mi reporte</Text>
           <Text style={estilos.detalle}>Te mandamos una notificación cuando se arregla el desperfecto.</Text>
@@ -34,9 +39,10 @@ export default function PantallaAjustesApp() {
           accessibilityLabel="Avisarme cuando se resuelva mi reporte"
           value={activo}
           onValueChange={alCambiar}
-          trackColor={{ true: tema.colores.primario, false: tema.colores.borde }}
+          trackColor={{ true: tema.colores.primario, false: tema.colores.superficieElevada }}
+          thumbColor={activo ? tema.colores.texto : tema.colores.textoSuave}
         />
-      </View>
+      </Tarjeta>
 
       {preferenciaAvisos && !concedido && notificaciones.estado !== 'cargando' ? (
         <Text style={estilos.aviso}>
@@ -59,10 +65,14 @@ const estilos = StyleSheet.create({
     alignItems: 'center',
     gap: tema.espaciado.m,
     padding: tema.espaciado.m,
-    borderRadius: tema.radio.m,
-    backgroundColor: tema.colores.superficie,
-    borderWidth: 1,
-    borderColor: tema.colores.borde,
+  },
+  icono: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: tema.colores.primario,
   },
   textos: {
     flex: 1,
