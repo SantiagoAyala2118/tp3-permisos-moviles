@@ -33,9 +33,9 @@
 | 9 | Ubicación | RF-4 | ✅ (falta prueba manual) |
 | 10 | Notificaciones, Avisos y Ajustes de la app | RF-5 | ✅ (falta prueba manual) |
 | 11 | Panel de permisos | RF-9 | ✅ (falta prueba manual) |
-| 12 | Pruebas en Expo Go y development build | RT-6, LC-5 | 🟡 preparado, faltan las pruebas en el celular |
-| 13 | README y capturas | E-1, E-3, E-4 | ⬜ |
-| 14 | Desafíos opcionales | OP-1…OP-4 | ⬜ |
+| 12 | Pruebas en Expo Go y development build | RT-6, LC-5 | ✅ |
+| 13 | README y capturas | E-1, E-3, E-4 | ✅ |
+| 14 | Desafíos opcionales | OP-1…OP-4 | 🟡 OP-1 y OP-4 hechos |
 | 15 | Preparación de la defensa oral | §5.6 | ⬜ |
 
 ---
@@ -125,7 +125,7 @@
 - `app.json`: `userInterfaceStyle` pasó a `"light"`, porque la app usa una sola paleta clara (`src/lib/tema.ts`).
 - El ícono de ajustes en el encabezado de "Reportes" lleva a `/ajustes-app`.
 - Lint y typecheck: 0 errores. `npx expo export --platform android` compila el bundle sin errores.
-- Las imágenes de la plantilla en `assets/images` (react-logo, tabIcons, etc.) quedan sin uso. Se pueden borrar más adelante.
+- Las imágenes de la plantilla en `assets/images` (react-logo, tabIcons, etc.) quedaron sin uso. Se borraron en la limpieza final (TASK 13).
 
 ---
 
@@ -297,7 +297,7 @@
 ## TASK 12 — Pruebas en Expo Go y development build
 
 **Cubre:** RT-6, LC-5.
-**Archivos:** `package.json` (`expo-dev-client`), `eas.json`, `app.json` (identificadores), `PRUEBAS.md`.
+**Archivos:** `package.json` (`expo-dev-client`), `eas.json`, `app.json` (identificadores), guía de pruebas `PRUEBAS.md` (borrada en la limpieza final: no es un entregable).
 
 **Preparación (Claude):**
 - [x] `npx expo install expo-dev-client`.
@@ -307,12 +307,12 @@
 - [x] `PRUEBAS.md`: guía paso a paso por requisito, con las capturas que pide el README.
 - [x] `npx expo lint`, `npx tsc --noEmit` y `npx expo-doctor` (21/21) sin errores.
 
-**Pruebas (Santiago, siguiendo `PRUEBAS.md`):**
+**Pruebas (Santiago, con la guía de pruebas):**
 - [x] Recorrido completo en Expo Go (todas las ramas de RF-1…RF-9; con todos los permisos denegados se crea un reporte → RF-7).
-- [ ] `npx eas-cli@latest login`, `npx eas-cli@latest init` y `npx eas-cli@latest build --profile development --platform android`. Después, instalar el APK.
-- [ ] Repetir las pruebas clave en la development build y verificar que en Ajustes solo aparezcan Cámara, Ubicación y Notificaciones.
-- [ ] Reset de permisos entre pruebas: reinstalar, o `adb` si se instalan las Platform-Tools.
-- [ ] Corregir lo que aparezca (anotado en la tabla final de `PRUEBAS.md`).
+- [x] `npx eas-cli@latest login`, `npx eas-cli@latest init` y `npx eas-cli@latest build --profile development --platform android`. Después, instalar el APK.
+- [x] Repetir las pruebas clave en la development build y verificar que en Ajustes solo aparezcan Cámara, Ubicación y Notificaciones.
+- [x] Reset de permisos entre pruebas: reinstalar, o `adb` si se instalan las Platform-Tools.
+- [x] Corregir lo que aparezca (ver "Correcciones surgidas de las pruebas").
 
 **Hecho cuando:** la app funciona en Expo Go y en la dev build. *(Santiago ejecuta las pruebas en su dispositivo; Claude guía y corrige.)*
 
@@ -367,13 +367,28 @@ Pedido de Santiago antes de sacar las capturas: aplicar la paleta verde (#09110D
 **Cubre:** E-1, E-3, E-4.
 **Archivos:** `README.md`, carpeta `docs/capturas/`.
 
-- [ ] Reemplazar el README de la plantilla.
-- [ ] Árbol de `src/app`, bloque `plugins` comentado, tabla de permisos (recurso, módulo, cuándo se pide, alternativa), justificación de cada `blockedPermissions`.
-- [ ] Capturas (las saca Santiago): escáner en sus 4 estados, ubicación concedida y denegada, foto desde el selector, notificación recibida, panel antes y después de volver de Ajustes.
-- [ ] Captura del diálogo del sistema con **nuestro texto de propósito** en dev build. ⚠️ En Android el diálogo no muestra texto propio: esta captura requiere **iOS** (dev build en dispositivo/simulador). Si no hay acceso, se deja constancia en el README.
-- [ ] Verificar que `node_modules` no esté en el repo.
+- [x] Reemplazar el README de la plantilla.
+- [x] Árbol de `src/app`, bloque `plugins` comentado, tabla de permisos (recurso, módulo, cuándo se pide, alternativa), justificación de cada `blockedPermissions`.
+- [x] Capturas (las saca Santiago): escáner en sus 4 estados, ubicación concedida y denegada, foto desde el selector, notificación recibida, panel antes y después de volver de Ajustes.
+- [x] Captura del diálogo del sistema con **nuestro texto de propósito** en dev build. ⚠️ En Android el diálogo no muestra texto propio: esta captura requiere **iOS** (dev build en dispositivo/simulador). Si no hay acceso, se deja constancia en el README.
+- [x] Verificar que `node_modules` no esté en el repo.
 
 **Hecho cuando:** el README tiene todas las secciones de E-3 y las capturas enlazadas.
+
+**Notas de cierre:**
+- El README nuevo tiene:
+  - cómo ejecutar la app, en Expo Go 57 y en la development build;
+  - el árbol de `src/app` y la tabla de rutas;
+  - la tabla de permisos y la regla `granted` / `canAskAgain`;
+  - el bloque `plugins` comentado y la justificación de cada `blockedPermissions`;
+  - la auditoría del manifiesto (OP-1);
+  - la organización del código;
+  - las 11 capturas enlazadas desde `docs/capturas/*.jpeg`;
+  - las pruebas realizadas y las notas técnicas.
+- **"Cargando":** dura una fracción de segundo y no se pudo capturar. Se explica en el README y se señala el `case 'cargando'` del código.
+- **E-4** (diálogo con texto de propósito): no se pudo tomar porque requiere iOS. Queda constancia en el README; en Android el diálogo no tiene texto propio.
+- **Limpieza para la entrega:** se borraron `PRUEBAS.md`, `scripts/reset-project.js` (y su script en `package.json`) y las imágenes de la plantilla sin uso. `node_modules` no está versionado.
+- `expo-doctor` avisa que hay un parche nuevo de `expo-notifications` (57.0.24). No se actualiza antes de la entrega, porque la development build está compilada y probada con la 57.0.23.
 
 ---
 
@@ -381,10 +396,10 @@ Pedido de Santiago antes de sacar las capturas: aplicar la paleta verde (#09110D
 
 **Cubre:** OP-1…OP-4. Se hacen los que Santiago elija.
 
-- [ ] OP-1: `npx expo prebuild --clean` y tabla en README de cada permiso del manifiesto, quién lo agrega y si se quitó.
+- [x] OP-1: `npx expo prebuild --clean` y tabla en README de cada permiso del manifiesto, quién lo agrega y si se quitó.
 - [ ] OP-2: `allowProvisional: true` en iOS y estado "provisional" en `/permisos`.
 - [ ] OP-3: nota de voz con `expo-audio` (`requestRecordingPermissionsAsync`); nuevo adaptador `microfono` + ajustar `blockedPermissions` y README.
-- [ ] OP-4: pantalla de bloqueado con el camino exacto en Ajustes para Android y para iOS.
+- [x] OP-4 (`textosPermisos` + `obtenerPasosAjustes`): pantalla de bloqueado con el camino exacto en Ajustes para Android y para iOS.
 
 **Hecho cuando:** cada desafío elegido funciona y está documentado.
 
